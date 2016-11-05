@@ -1,27 +1,27 @@
 
-local MJGameScene = import("src.app.Game.mMJGame.MJGameScene")
-local MyGameScene = class("MyGameScene", MJGameScene)
+local Base = import("..mMJGame.MJGameScene")
+local MyGameScene = class("MyGameScene", Base)
 
 
-local MyGameController              = import("src.app.Game.mMyGame.MyGameController")
+local MyGameController              = import(".MyGameController")
 
-local MyGameClock                   = import("src.app.Game.mMyGame.MyGameClock")
-local MyGameInfo                    = import("src.app.Game.mMyGame.MyGameInfo")
-local MyPGCCards                    = import("src.app.Game.mMyGame.MyPGCCards")
-local MJPGCCardsManager             = import("src.app.Game.mMJGame.MJPGCCardsManager")
-local MyCastoffCards                = import("src.app.Game.mMyGame.MyCastoffCards")
-local MJCastoffCardsManager         = import("src.app.Game.mMJGame.MJCastoffCardsManager")
-local MyShowDownCards               = import("src.app.Game.mMyGame.MyShowDownCards")
-local MJShowDownCardsManager        = import("src.app.Game.mMJGame.MJShowDownCardsManager")
-local MyResultPanel                 = import("src.app.Game.mMyGame.MyResultPanel")
-local MyPGCHManager                 = import("src.app.Game.mMyGame.MyPGCHManager")
+local MyGameClock                   = import(".MyGameClock")
+local MyGameInfo                    = import(".MyGameInfo")
+local MyPGCCards                    = import(".MyPGCCards")
+local MJPGCCardsManager             = import("..mMJGame.MJPGCCardsManager")
+local MyCastoffCards                = import(".MyCastoffCards")
+local MJCastoffCardsManager         = import("..mMJGame.MJCastoffCardsManager")
+local MyShowDownCards               = import(".MyShowDownCards")
+local MJShowDownCardsManager        = import("..mMJGame.MJShowDownCardsManager")
+local MyResultPanel                 = import(".MyResultPanel")
+local MyPGCHManager                 = import(".MyPGCHManager")
 
-function MyGameScene:ctor(app, name)
+function MyGameScene:ctor(app, name, param)
     print("Hello Game!")
 
     self._resutPanel                = nil
 
-    MyGameScene.super.ctor(self, app, name)
+    Base.ctor(self, app, name, param)
 end
 
 function MyGameScene:setControllerDelegate()

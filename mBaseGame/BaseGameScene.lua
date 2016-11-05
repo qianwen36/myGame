@@ -1,6 +1,6 @@
 
-local GameFrameScene = import("src.app.Game.mGameFrame.GameFrameScene")
-local BaseGameScene = class("BaseGameScene", GameFrameScene)
+local Base = import("..mGameFrame.GameFrameScene")
+local BaseGameScene = class("BaseGameScene", Base)
 
 local BaseGameDef               = import("src.app.Game.mBaseGame.BaseGameDef")
 local BaseGameController        = import("src.app.Game.mBaseGame.BaseGameController")
@@ -34,7 +34,7 @@ BaseGameScene.GameLayerZIndex   = {
 
 local windowSize = cc.Director:getInstance():getWinSize()
 
-function BaseGameScene:ctor(app, name)
+function BaseGameScene:ctor(app, name, param)
     self._gameController        = nil
 
     self._baseLayer             = nil
@@ -56,18 +56,18 @@ function BaseGameScene:ctor(app, name)
     self._safeBox               = nil
     self._setting               = nil
 
-    BaseGameScene.super.ctor(self, app, name)
+    Base.ctor(self, app, name, param)
 end
 
 function BaseGameScene:onCreate()
     self:setControllerDelegate()
     self:initGameController()
 
-    BaseGameScene.super.onCreate(self)
+    Base.onCreate(self)
 end
 
 function BaseGameScene:init()
-    BaseGameScene.super.init(self)
+    Base.init(self)
 
     self:setTouched()
     self:setKeypad()
@@ -96,7 +96,7 @@ function BaseGameScene:createBaseLayer()
         self:addChild(self._baseLayer)
     end
 
-    BaseGameScene.super.createBaseLayer(self)
+    Base.createBaseLayer(self)
 end
 
 function BaseGameScene:createGameLayer()
@@ -106,7 +106,7 @@ function BaseGameScene:createGameLayer()
         self:addGameNode()
     end
 
-    BaseGameScene.super.createGameLayer(self)
+    Base.createGameLayer(self)
 end
 
 function BaseGameScene:createSysInfoLayer()
@@ -116,7 +116,7 @@ function BaseGameScene:createSysInfoLayer()
         self:addSysInfoNode()
     end
 
-    BaseGameScene.super.createSysInfoLayer(self)
+    Base.createSysInfoLayer(self)
 end
 
 function BaseGameScene:createLoadingLayer()
@@ -126,7 +126,7 @@ function BaseGameScene:createLoadingLayer()
         self:addLoadingNode()
     end
 
-    BaseGameScene.super.createLoadingLayer(self)
+    Base.createLoadingLayer(self)
 end
 
 function BaseGameScene:createNetwork()
@@ -381,7 +381,7 @@ function BaseGameScene:getChat()            return self._chat               end
 function BaseGameScene:getSetting()         return self._setting            end
 
 function BaseGameScene:onEnter()
-    BaseGameScene.super.onEnter(self)
+    Base.onEnter(self)
 
     if self._gameController then
         self._gameController:onGameEnter()

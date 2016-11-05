@@ -1,8 +1,9 @@
 
-local GameFrameScene = class("GameFrameScene", cc.load("mvc").ViewBase)
+local Base = cc.load("mvc").ViewBase
+local GameFrameScene = class("GameFrameScene", Base)
 
-function GameFrameScene:ctor(app, name)
-    GameFrameScene.super.ctor(self, app, name)
+function GameFrameScene:ctor(app, name, param)
+    Base.ctor(self, app, name, param)
 end
 
 function GameFrameScene:onCreate()

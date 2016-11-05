@@ -8,24 +8,24 @@ require("src.cocos.cocos2d.bitExtend")
 require("src.app.GameHall.PublicInterface")
 local PublicInterFace                           = cc.exports.PUBLIC_INTERFACE
 
-local BaseGameDef                               = import("src.app.Game.mBaseGame.BaseGameDef")
+local BaseGameDef                               = import(".mBaseGame.BaseGameDef")
 
 cc.exports.GameController                       = {}
 local BaseGameController                        = cc.exports.GameController
 
-local BaseGameData                              = import("src.app.Game.mBaseGame.BaseGameData")
-local BaseGamePlayerInfoManager                 = import("src.app.Game.mBaseGame.BaseGamePlayerInfoManager")
-local BaseGameUtilsInfoManager                  = import("src.app.Game.mBaseGame.BaseGameUtilsInfoManager")
-local BaseGameConnect                           = import("src.app.Game.mBaseGame.BaseGameConnect")
-local BaseGameNotify                            = import("src.app.Game.mBaseGame.BaseGameNotify")
+local BaseGameData                              = import(".mBaseGame.BaseGameData")
+local BaseGamePlayerInfoManager                 = import(".mBaseGame.BaseGamePlayerInfoManager")
+local BaseGameUtilsInfoManager                  = import(".mBaseGame.BaseGameUtilsInfoManager")
+local BaseGameConnect                           = import(".mBaseGame.BaseGameConnect")
+local BaseGameNotify                            = import(".mBaseGame.BaseGameNotify")
 
-local GamePublicInterface                       = import("src.app.Game.mMyGame.GamePublicInterface")
+local GamePublicInterface                       = import("..mMyGame.GamePublicInterface")
 
 function BaseGameController:initGameController(baseGameScene)
     if not baseGameScene then printError("baseGameScene is nil!!!") return end
 
     self:resetController()
-    
+    self.params = baseGameScene:getData()
     self._baseGameScene = baseGameScene
 
     self:createGameData()

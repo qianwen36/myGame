@@ -1,6 +1,6 @@
 
-local BaseGameScene = import("src.app.Game.mBaseGame.BaseGameScene")
-local MJGameScene = class("MJGameScene", BaseGameScene)
+local Base = import("..mBaseGame.BaseGameScene")
+local MJGameScene = class("MJGameScene", Base)
 
 
 local MJGameDef                     = import("src.app.Game.mMJGame.MJGameDef")
@@ -29,7 +29,7 @@ local MJGameResultPanel             = import("src.app.Game.mMJGame.MJGameResultP
 
 local windowSize = cc.Director:getInstance():getWinSize()
 
-function MJGameScene:ctor(app, name)
+function MJGameScene:ctor(app, name, param)
     self._resultLayer               = nil
     self._resultPanel               = nil
 
@@ -44,15 +44,15 @@ function MJGameScene:ctor(app, name)
 
     self._PGCHManager               = nil
 
-    MJGameScene.super.ctor(self, app, name)
+    Base.ctor(self, app, name, param)
 end
 
 function MJGameScene:init()
-    MJGameScene.super.init(self)
+    Base.init(self)
 end
 
 function MJGameScene:onEnter()
-    MJGameScene.super.onEnter(self)
+    Base.onEnter(self)
 
     audio.stopMusic("res/Hall/Sounds/HallBG.mp3")
 end
