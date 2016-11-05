@@ -4,9 +4,6 @@ local BaseGameNotify = class("BaseGameNotify")
 local BaseGameReq               = import("src.app.Game.mBaseGame.BaseGameReq")
 local BaseGameDef               = import("src.app.Game.mBaseGame.BaseGameDef")
 
-require("src.app.GameHall.PublicInterface")
-local PublicInterFace           = cc.exports.PUBLIC_INTERFACE
-
 function BaseGameNotify:create(gameController)
     return BaseGameNotify.new(gameController)
 end

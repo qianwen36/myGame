@@ -5,8 +5,6 @@ end
 
 
 require("src.cocos.cocos2d.bitExtend")
-require("src.app.GameHall.PublicInterface")
-local PublicInterFace                           = cc.exports.PUBLIC_INTERFACE
 
 local BaseGameDef                               = import(".mBaseGame.BaseGameDef")
 
@@ -25,7 +23,7 @@ function BaseGameController:initGameController(baseGameScene)
     if not baseGameScene then printError("baseGameScene is nil!!!") return end
 
     self:resetController()
-    self.params = baseGameScene:getData()
+    self.params = baseGameScene:getData() --{enterRoomInfo, playerInfo, tableInfo}
     self._baseGameScene = baseGameScene
 
     self:createGameData()
@@ -120,8 +118,9 @@ end
 function BaseGameController:setSelfInfo()
     if not self._baseGamePlayerInfoManager then return end
 
-    local playerInfo = PublicInterFace.GetPlayerInfo()
-    local playerTableInfo = PublicInterFace.GetEnterGameInfo().tableInfo
+    local params = self.params_
+    local playerInfo = params.playerInfo
+    local playerTableInfo = params.tableInfo
 
     local selfInfo = {}
     selfInfo.nUserID        = playerInfo.nUserID
@@ -153,9 +152,10 @@ end
 function BaseGameController:setUtilsInfo()
     if not self._baseGameUtilsInfoManager then return end
 
-    local playerInfo = PublicInterFace.GetPlayerInfo()
-    local playerEnterGameOK = PublicInterFace.GetEnterGameInfo().enterRoomOkInfo
-    local RoomInfo = PublicInterFace.GetEnterGameInfo().GetEnterRoomInfo().original
+    local params = self.params_
+    local playerInfo = params.playerInfo
+    local playerEnterGameOK = params.enterRoomInfo
+    local RoomInfo = params.roomData
 
     local utilsInfo = {}
     utilsInfo.szHardID          = playerInfo.szHardID
@@ -171,7 +171,8 @@ function BaseGameController:setUtilsInfo()
 end
 
 function BaseGameController:createNetwork()
-    self._baseGameNetworkClient = MCAgent:getInstance():createClient(PublicInterFace.GetGameServerIp(), PublicInterFace.GetGameServerPort())
+    local params = self.params_
+    self._baseGameNetworkClient = MCAgent:getInstance():createClient(params.ip, params.port)
 
     local function onDataReceived(clientid, msgtype, session, request, data)
         self:onDataReceived(clientid, msgtype, session, request, data)
@@ -993,32 +994,6 @@ function BaseGameController:stopGamePluse()
     end
 end
 
---function BaseGameController:onCheckVersion(data)
---    local versionInfo = nil
---    if self._baseGameData then
---        versionInfo = self._baseGameData:getCheckVersionInfo(data)
---    end
---
---    if versionInfo then
---        local gameVersion = PublicInterFace.GetGameVersion()
---        local splitArray = self:split(gameVersion, ".")
---
---        local bEnterGame = false
---        if #splitArray == 3 then
---            if tonumber(splitArray[1]) == versionInfo.nMajorVer and tonumber(splitArray[2]) == versionInfo.nMinorVer then
---                if self._baseGameConnect then
---                    self._baseGameConnect:gc_EnterGame()
---                    bEnterGame = true
---                end
---            end
---        end
---
---        if not bEnterGame then
---            PublicInterFace.GoBackToMainSceneWithVersion()
---        end
---    end
---end
-
 function BaseGameController:onCheckVersion()
     if self._baseGameConnect then
         self._baseGameConnect:gc_EnterGame()
@@ -1026,7 +1001,7 @@ function BaseGameController:onCheckVersion()
 end
 
 function BaseGameController:onCheckVersionOld()
-    PublicInterFace.GoBackToMainSceneWithVersion()
+    self._baseGameScene:showToast('BaseGameController:onCheckVersionOld()')
 end
 
 function BaseGameController:onCheckVersionNew()
@@ -1804,7 +1779,7 @@ end
 
 function BaseGameController:gotoHallScene()
     print("GoBackToMainScene")
-    PublicInterFace.GoBackToMainScene()
+    self._baseGameScene:goBack()
     self._offroom = nil
 end
 
@@ -1964,7 +1939,7 @@ function BaseGameController:getFinished()
         nUserID     = playerInfoManager:getSelfUserID(),
         szHardID    = uitleInfoManager:getHardID()
     }
-    PublicInterFace.GetFinished(params)
+    self._baseGameScene:goBack(params)
 end
 
 function BaseGameController:playEffect(fileName)

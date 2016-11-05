@@ -3,9 +3,6 @@ local BaseGameConnect = class("BaseGameConnect")
 
 local treepack                              = cc.load("treepack")
 
-require("src.app.GameHall.PublicInterface")
-local PublicInterFace                       = cc.exports.PUBLIC_INTERFACE
-
 local BaseGameReq                           = import("src.app.Game.mBaseGame.BaseGameReq")
 local BaseGameDef                           = import("src.app.Game.mBaseGame.BaseGameDef")
 
@@ -160,8 +157,8 @@ function BaseGameConnect:gc_CheckVersion()
         else
             gameVersionName = "AND"
         end
-        local gameVersion = PublicInterFace.GetGameVersion()
-        local splitArray = self._gameController:split(gameVersion, ".")
+        local gameVersion = self._gameController.getGameVersion()
+        local splitArray = string.split(gameVersion, ".")
         if #splitArray == 3 then
             majorVer = tonumber(splitArray[1])
             minorVer = tonumber(splitArray[2])
