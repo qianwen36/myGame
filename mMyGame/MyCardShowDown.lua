@@ -1,5 +1,5 @@
 
-local MJCardShowDown = import("src.app.Game.mMJGame.MJCardShowDown")
+local MJCardShowDown = import("..mMJGame.MJCardShowDown")
 local MyCardShowDown = class("MyCardShowDown", MJCardShowDown)
 
 function MyCardShowDown:getCardResName(resIndex)

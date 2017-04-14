@@ -1,5 +1,5 @@
 
-local MJCardPGC = import("src.app.Game.mMJGame.MJCardPGC")
+local MJCardPGC = import("..mMJGame.MJCardPGC")
 local MyCardPGC = class("MJCardPGC", MJCardPGC)
 
 function MyCardPGC:getCardResName(resIndex)

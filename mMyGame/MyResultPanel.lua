@@ -1,7 +1,7 @@
 
 local MyResultPanel = class("MyResultPanel")
 
-local MJGameDef                 = import("src.app.Game.mMJGame.MJGameDef")
+local MJGameDef                 = import("..mMJGame.MJGameDef")
 
 function MyResultPanel:create(resutPanel, gameController)
     return MyResultPanel.new(resutPanel, gameController)

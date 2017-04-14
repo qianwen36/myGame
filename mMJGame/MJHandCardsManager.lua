@@ -1,7 +1,7 @@
 
 local MJHandCardsManager = class("MJHandCardsManager")
 
-local MJGameDef                 = import("src.app.Game.mMJGame.MJGameDef")
+local MJGameDef                 = import(".MJGameDef")
 
 function MJHandCardsManager:create(MJHandCards, gameController)
     return MJHandCardsManager.new(MJHandCards, gameController)

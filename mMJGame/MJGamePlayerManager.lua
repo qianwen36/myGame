@@ -1,15 +1,9 @@
 
-local BaseGamePlayerManager = import("src.app.Game.mBaseGame.BaseGamePlayerManager")
+local BaseGamePlayerManager = import("..mBaseGame.BaseGamePlayerManager")
 local MJGamePlayerManager = class("MJGamePlayerManager", BaseGamePlayerManager)
 
 function MJGamePlayerManager:ctor(players, gameController)
     MJGamePlayerManager.super.ctor(self, players, gameController)
-end
-
-function MJGamePlayerManager:ope_playPGCHAni(drawIndex, aniName)
-    if self._players[drawIndex] then
-        self._players[drawIndex]:ope_playPGCHAni(aniName)
-    end
 end
 
 function MJGamePlayerManager:addPlayerFlower(drawIndex)

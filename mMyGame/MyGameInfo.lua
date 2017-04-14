@@ -1,5 +1,5 @@
 
-local MJGameInfo = import("src.app.Game.mMJGame.MJGameInfo")
+local MJGameInfo = import("..mMJGame.MJGameInfo")
 local MyGameInfo = class("MyGameInfo", MJGameInfo)
 
 function MyGameInfo:ctor(gameInfo, gameController)

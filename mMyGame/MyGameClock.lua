@@ -1,5 +1,5 @@
 
-local MJGameClock = import("src.app.Game.mMJGame.MJGameClock")
+local MJGameClock = import("..mMJGame.MJGameClock")
 local MyGameClock = class("MyGameClock", MJGameClock)
 
 function MyGameClock:setClockHand(drawIndex)

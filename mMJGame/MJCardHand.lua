@@ -1,42 +1,32 @@
 
-local MJCardBase = import("src.app.Game.mMJGame.MJCardBase")
+local MJCardBase = import(".MJCardBase")
 local MJCardHand = class("MJCardHand", MJCardBase)
 
-function MJCardHand:ctor(MJCardNode, drawIndex, cardDelegate)    
-    self._card                  = nil
+function MJCardHand:ctor(MJCardSprite, drawIndex, cardDelegate)
     self._MJMask                = nil
     self._bMask                 = false
     self._MJPositionX           = 0
     self._MJPositionY           = 0
-    self._MJPlanePositionX      = 0
-    self._MJPlanePositionY      = 0
     self._MJOffsetY             = 50
     self._bTouched              = false
     self._bEnableTouch          = false
     self._bSelected             = false
     self._touchBegan            = false
-    
-    self._isSpecialGangCard     = false
-    self._bHaiDiCard            = false
-    MJCardHand.super.ctor(self, MJCardNode, drawIndex, cardDelegate)
+    self._touchEnd              = false
+
+    MJCardHand.super.ctor(self, MJCardSprite, drawIndex, cardDelegate)
 end
 
 function MJCardHand:init()
-
-    MJCardHand.super.init(self)
-    
-    self._MJMask        = self._MJCardSprite:getChildByName("mask")
-   self:setMask(false)
-    
     if self._MJCardSprite then
         self._MJPositionX = self._MJCardSprite:getPositionX()
         self._MJPositionY = self._MJCardSprite:getPositionY()
+        self._MJMask = self._MJCardSprite:getChildByName("hand_sp_mask")
+    end
 
-        local plane = self._MJCardNode:getParent()
-        self._MJPlanePositionX = plane:getPositionX()
-        self._MJPlanePositionY = plane:getPositionY()
-    end   
     self:setTouch()
+
+    MJCardHand.super.init(self)
 end
 
 function MJCardHand:setTouch()
@@ -45,7 +35,6 @@ function MJCardHand:setTouch()
     local listener = cc.EventListenerTouchOneByOne:create()
 
     listener:registerScriptHandler(function(touch, event)
-        --print("touchBegan")
         if self._bTouched then
             if self:isSingleClk() then
             else
@@ -54,14 +43,11 @@ function MJCardHand:setTouch()
                 end
             end
         else
-            --print("touchBegan4")
             if self:isSelectCard() then
-                print("touchBegan2")
                 if self:containsTouchLocation(touch:getLocation().x, touch:getLocation().y + self._MJOffsetY) then
                     self:touchBegan()
                 end
             else
-                --print("touchBegan3")
                 if self:containsTouchLocation(touch:getLocation().x, touch:getLocation().y) then
                     self:touchBegan()
                 end
@@ -81,23 +67,25 @@ function MJCardHand:setTouch()
                 elseif not self:containsTouchLocation(touch:getLocation().x, touch:getLocation().y + self._MJOffsetY) then
                     self:touchOut()
                 else
-                    self:touchOut()
                 end
             end
         else
+            if self:isSingleClk() then
+                if self:containsTouchLocation(touch:getLocation().x, touch:getLocation().y) then
+                    self:touchBegan()
+                end
+            else
+                if self:containsTouchLocation(touch:getLocation().x, touch:getLocation().y) then
+                    self:moveOver()
+                end
+            end 
         end
         return true
     end, cc.Handler.EVENT_TOUCH_MOVED)
     listener:registerScriptHandler(function(touch, event)
         if self._bTouched then
-            if self:isSelectCard() then
-                if self:containsTouchLocation(touch:getLocation().x, touch:getLocation().y + self._MJOffsetY) then
-                    self:touchEnd()
-                end
-            else
-                if self:containsTouchLocation(touch:getLocation().x, touch:getLocation().y)  then
-                    self:touchEnd()
-                end
+            if self:containsTouchLocation(touch:getLocation().x, touch:getLocation().y + self._MJOffsetY) then
+                self:touchEnd()
             end
         end
         return true
@@ -109,23 +97,15 @@ function MJCardHand:setTouch()
 end
 
 function MJCardHand:containsTouchLocation(x, y)
-    if self:isMask() then return false  end
-    local position = cc.p(self._MJCardNode:getPosition())
-    local position1= cc.p(self._MJCardSprite:getPosition())
+    local position = cc.p(self._MJCardSprite:getPosition())
     local s = self._MJCardSprite:getContentSize()
-    local touchRect
-    if self:isSelectCard() then
-        touchRect = cc.rect(position.x+ position1.x + self._MJPlanePositionX - (s.width/2), position.y + position1.y + self._MJPlanePositionY - (s.height/2), s.width, s.height+50)
-    else
-        touchRect = cc.rect(position.x+ position1.x + self._MJPlanePositionX - (s.width/2), position.y + position1.y + self._MJPlanePositionY - (s.height/2), s.width, s.height)
-    end
-    --local touchRect = cc.rect(position.x+ position1.x + self._MJPlanePositionX - (s.width/2), position.y + position1.y + self._MJPlanePositionY - (s.height/2), s.width, s.height+50)
+    local touchRect = cc.rect(position.x, position.y, s.width, s.height)
     local b = cc.rectContainsPoint(touchRect, cc.p(x, y))
     return b
 end
 
 function MJCardHand:canMoveCard(touchPosY)
-     if touchPosY > self._MJPositionY + self._MJCardSprite:getContentSize().height / 2  then
+     if touchPosY > self._MJPositionY + self._MJCardSprite:getContentSize().height / 2 + self._MJOffsetY then
         return true
      end
      return false
@@ -134,6 +114,7 @@ end
 function MJCardHand:touchBegan()
     if not self:isVisible() then return end
     if not self._bEnableTouch then return end
+
     if self:isSingleClk() then
         self._cardDelegate:resetCardsPos()
         self:selectCard()
@@ -149,12 +130,14 @@ function MJCardHand:touchBegan()
                 self._touchBegan = false
             else
                 self._bTouched = true
-                self._touchBegan = true
+                self._touchBegan = false
             end
         else
             self._cardDelegate:unSelectCards()
+            self:selectCard()
             self._bTouched = true
             self._touchBegan = true
+            self._touchEnd = false
         end
     end
 end
@@ -162,14 +145,14 @@ end
 function MJCardHand:initSelState()
     self._bTouched = false
     self._touchBegan = false
-    self:unSelectCard()
+    self._touchEnd = false
 end
 
 function MJCardHand:moveOver()
     if not self:isVisible() then return end
     if not self._bEnableTouch then return end
 
-    if not self:isSelectCard()then
+    if not self:isSelectCard() and not self._touchEnd then
         self._cardDelegate:resetCardsPos()
         self:selectCard()
         self._bTouched = true
@@ -181,13 +164,9 @@ function MJCardHand:touchMoved(x, y)
     if not self:isVisible() then return end
     if not self._bEnableTouch then return end
 
-    local position = cc.p(self._MJCardNode:getPosition())
-    local s = self._MJCardSprite:getContentSize()
-    local cardPosition = cc.p(position.x+ self._MJPlanePositionX , position.y + self._MJPlanePositionY )
-    
     self._cardDelegate:resetCardsPos()
     if self._MJCardSprite then
-        self._MJCardSprite:setPosition(x - cardPosition.x , y - cardPosition.y )
+        self._MJCardSprite:setPosition(x - self._MJCardSprite:getContentSize().width / 2, y - self._MJCardSprite:getContentSize().height / 2)
     end
 end
 
@@ -199,7 +178,7 @@ end
 
 function MJCardHand:isRunning()
     if self._MJCardSprite then
-        return self._MJCardSprite:numberOfRunningActions() > 0
+        return self._MJCardSprite:isRunning()
     end
     return false
 end
@@ -207,8 +186,8 @@ end
 function MJCardHand:touchOut()
     if not self:isVisible() then return end
     if not self._bEnableTouch then return end
+    self._touchEnd = false
 
-    print("touchOut")
     if self:isSingleClk() then
         self._bTouched = false
         self:unSelectCard()
@@ -222,6 +201,7 @@ end
 function MJCardHand:touchEnd()
     if not self:isVisible() then return end
     if not self._bEnableTouch then return end
+    self._touchEnd = true
 
     if self:isSingleClk() then
         --print("self._cardDelegate:onThrowCard(%d)", self._MJID)
@@ -237,15 +217,13 @@ function MJCardHand:touchEnd()
         elseif self:isSelectCard() then
             if self._touchBegan then
                 self._touchBegan = false
-                self._cardDelegate:resetCardsPos()
-                --self:selectCard()
-                self:unSelectCard()
             else
                 if self._cardDelegate:canThrow() then
-
+                    
                 else
                     self._cardDelegate:resetCardsPos()
                     self:unSelectCard()
+                    self._touchEnd = false
                 end
             end
         else
@@ -265,13 +243,12 @@ end
 
 function MJCardHand:unSelectCard()
     if not self._MJCardSprite then return end
-    
-    
+
     self._MJCardSprite:setPosition(self._MJPositionX, self._MJPositionY)
     self._bSelected = false
 end
 
-function MJCardHand:isSelectCard()    
+function MJCardHand:isSelectCard()
     return self._bSelected
 end
 
@@ -285,7 +262,7 @@ function MJCardHand:resetCard()
     self:setEnableTouch(false)
     self:setMask(false)
     self._bSelected = false
-    self._bHaiDiCard= false
+
     MJCardHand.super.resetCard(self)
 end
 
@@ -296,12 +273,8 @@ function MJCardHand:setMask(bMask)
     end
 end
 
-function MJCardHand:isMask()
-    return self._bMask
-end
-
 function MJCardBase:getCardResName(resIndex)
-    return     "res/GameCocosStudio/game/card/images/" ..self._resIndex.. ".png"
+    return "res/Game/GamePic/cardid/hand/" ..self._resIndex.. ".png"
 end
 
 function MJCardHand:dealCard(lastDeal)
@@ -357,19 +330,8 @@ function MJCardHand:catchCard(id)
     end
 end
 
-function MJCardHand:catchHaiDiCard(id)
-    self:setHaiDiCard(true)   
-    self:catchCard(id)
-end
-
 function MJCardHand:catchCardCallback(id)
-    if self:isSpecialGangCard() then
-        self._cardDelegate:onCatchSpecialGangCardFinished(id)
-    elseif self:isHaiDiCard() then
-        self._cardDelegate:onCatchHaiDiCardFinished(id)
-    else
-        self._cardDelegate:onCatchCardFinished(id)
-    end
+    self._cardDelegate:onCatchCardFinished(id)
 end
 
 function MJCardHand:isSingleClk()
@@ -377,22 +339,6 @@ function MJCardHand:isSingleClk()
         return self._cardDelegate:isSingleClk()
     end
     return true
-end
-
-function MJCardHand:setSpecialGangCard(bGangCard)
-    self._isSpecialGangCard = bGangCard
-end
-
-function MJCardHand:isSpecialGangCard()
-    return self._isSpecialGangCard
-end
-
-function MJCardHand:setHaiDiCard(bHaiDi)
-    self._bHaiDiCard = bHaiDi
-end
-
-function MJCardHand:isHaiDiCard()
-    return self._bHaiDiCard
 end
 
 return MJCardHand

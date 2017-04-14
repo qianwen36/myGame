@@ -180,7 +180,7 @@ cc.exports.BaseGameDef                      = {
     BASEGAME_FLAG_SUPPORT_MONTHLY_LIMIT_EX  = 0x00000002,
 }
 
-local GamePublicInterface = import("src.app.Game.mMyGame.GamePublicInterface")
+local GamePublicInterface = import("..mMyGame.GamePublicInterface")
 
 if GamePublicInterface and GamePublicInterface:IS_FRAME_1() then
     cc.exports.BaseGameDef.BASEGAME_GR_START_GAME                   = 201161

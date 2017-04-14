@@ -1,10 +1,34 @@
 
-local BaseGameData = import("src.app.Game.mBaseGame.BaseGameData")
+local BaseGameData = import("..mBaseGame.BaseGameData")
 local MJGameData = class("MJGameData", BaseGameData)
 
 local treepack          = cc.load("treepack")
-local BaseGameReq       = import("src.app.Game.mBaseGame.BaseGameReq")
-local MJGameReq         = import("src.app.Game.mMJGame.MJGameReq")
+local BaseGameReq       = import("..mBaseGame.BaseGameReq")
+local MJGameReq         = import(".MJGameReq")
+
+function MJGameData:getEnterGameOKInfo(data)
+    if data == nil then return nil end
+
+    local gameEnterInfo = MJGameReq["MJ_ENTER_INFO"]
+    local msgGameEnterInfo = treepack.unpack(data, gameEnterInfo)
+
+    local dataSoloPlayerHead = string.sub(data, gameEnterInfo.maxsize + 1)
+    local soloPlayerHead = BaseGameReq["SOLOPLAYER_HEAD"]
+    local msgSoloPlayerHead = treepack.unpack(dataSoloPlayerHead, soloPlayerHead)
+
+    local msgSoloPlayers = {}
+    local dataSoloPlayerStart = string.sub(dataSoloPlayerHead, soloPlayerHead.maxsize + 1)
+    if dataSoloPlayerStart and msgSoloPlayerHead.nPlayerCount then
+        for i = 1, msgSoloPlayerHead.nPlayerCount do
+            local soloPlayer = BaseGameReq["SOLO_PLAYER"]
+            msgSoloPlayers[i] = treepack.unpack(dataSoloPlayerStart, soloPlayer)
+
+            dataSoloPlayerStart = string.sub(dataSoloPlayerStart, soloPlayer.maxsize + 1)
+        end
+    end
+
+    return msgGameEnterInfo, msgSoloPlayers
+end
 
 function MJGameData:getGameStartInfo(data)
     if data == nil then return nil end
@@ -26,14 +50,6 @@ function MJGameData:getCardCaughtInfo(data)
     if data == nil then return nil end
 
     local info = MJGameReq["CARD_CAUGHT"]
-    local msgInfo = treepack.unpack(data, info)
-    return msgInfo
-end
-
-function MJGameData:getMyCardCaughtInfo(data)
-    if data == nil then return nil end
-
-    local info = MJGameReq["MY_CARD_CAUGHT"]
     local msgInfo = treepack.unpack(data, info)
     return msgInfo
 end

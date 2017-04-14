@@ -1,10 +1,10 @@
 
 local MJPGCCards = class("MJPGCCards")
 
-local MJGameDef                 = import("src.app.Game.mMJGame.MJGameDef")
+local MJGameDef                 = import(".MJGameDef")
 
-local MJPGCCardsItem            = import("src.app.Game.mMJGame.MJPGCCardsItem")
-local MJCalculator              = import("src.app.Game.mMJGame.MJCalculator")
+local MJPGCCardsItem            = import(".MJPGCCardsItem")
+local MJCalculator              = import(".MJCalculator")
 
 local PGCCARDS_SCALETIME        = {{1, 1, 1, 1, 1}, {1, 1, 0.9, 0.8, 0.75}, {1, 1, 1, 1, 1}, {1, 1, 0.9, 0.8, 0.75}}
 
@@ -190,7 +190,6 @@ end
 function MJPGCCards:getPengCardIDs()
     local pengCardIDs = {}
     local index = 1
-
     for i = 1, self._currentIndex - 1 do
         local pgcItem = self._pgcItems[i]
         if pgcItem then

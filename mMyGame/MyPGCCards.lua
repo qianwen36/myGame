@@ -1,9 +1,9 @@
 
-local MJPGCCards = import("src.app.Game.mMJGame.MJPGCCards")
+local MJPGCCards = import("..mMJGame.MJPGCCards")
 local MyPGCCards = class("MJCardPGC", MJPGCCards)
 
-local MJGameDef                 = import("src.app.Game.mMJGame.MJGameDef")
-local MyPGCCardsItem            = import("src.app.Game.mMyGame.MyPGCCardsItem")
+local MJGameDef                 = import("..mMJGame.MJGameDef")
+local MyPGCCardsItem            = import(".MyPGCCardsItem")
 
 local PGCCARDS_SCALETIME        = {{1, 1, 1, 1, 1}, {1, 1, 0.9, 0.8, 0.75}, {1, 1, 1, 1, 1}, {1, 1, 0.9, 0.8, 0.75}}
 

@@ -4,19 +4,19 @@ if nil == cc or nil == cc.exports then
 end
 
 
-local MJGameDef                                 = import("src.app.Game.mMJGame.MJGameDef")
-local MyGameDef                                 = import("src.app.Game.mMyGame.MyGameDef")
-local MJGameController                          = import("src.app.Game.mMJGame.MJGameController")
+local MJGameDef                                 = import("..mMJGame.MJGameDef")
+local MyGameDef                                 = import(".MyGameDef")
+local MJGameController                          = import("..mMJGame.MJGameController")
 
 cc.exports.MyGameController                     = {}
 local MyGameController                          = cc.exports.MyGameController
 
-local MyGameData                                = import("src.app.Game.mMyGame.MyGameData")
-local MyGameUtilsInfoManager                    = import("src.app.Game.mMyGame.MyGameUtilsInfoManager")
-local MyGameConnect                             = import("src.app.Game.mMyGame.MyGameConnect")
-local MyGameNotify                              = import("src.app.Game.mMyGame.MyGameNotify")
+local MyGameData                                = import(".MyGameData")
+local MyGameUtilsInfoManager                    = import(".MyGameUtilsInfoManager")
+local MyGameConnect                             = import(".MyGameConnect")
+local MyGameNotify                              = import(".MyGameNotify")
 
-local MJCalculator                              = import("src.app.Game.mMJGame.MJCalculator")
+local MJCalculator                              = import("..mMJGame.MJCalculator")
 
 MyGameController.super = MJGameController
 setmetatable(MyGameController, {__index = MyGameController.super})

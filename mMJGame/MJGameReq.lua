@@ -763,7 +763,7 @@ local MJGameReq = {
             [9] = 32,
             [10] = {maxlen = 4},
             [12] = {maxlen = 4},
-            [14] = {maxlen = 2},
+            [14] = {maxlen = 1},
             maxlen = 14
         },
         nameMap = {
@@ -782,9 +782,9 @@ local MJGameReq = {
             'nCardsCount',
             'nCardIDs'
         },
-        formatKey = '<iiiiiiiiAiiiiLiiiiiii',
-        deformatKey = '<iiiiiiiiA32iiiiLiiiiiii',
-        maxsize = 112
+        formatKey = '<iiiiiiiiAiiiiLiiiiii',
+        deformatKey = '<iiiiiiiiA32iiiiLiiiiii',
+        maxsize = 108
     },
 
     CARDS_THROW={
@@ -828,25 +828,6 @@ local MJGameReq = {
         formatKey = '<iiiLiiii',
         deformatKey = '<iiiLiiii',
         maxsize = 32
-    },
-    
-    MY_CARD_CAUGHT={
-        lengthMap = {
-            [5] = {maxlen = 4},
-            [6] = {maxlen = 4},
-            maxlen = 6
-        },
-        nameMap = {
-            'nChairNO',
-            'nCardID',
-            'nCardNO',
-            'dwFlags',
-            'nReserved',
-            'nIndexSpecialGang'
-        },
-        formatKey = '<iiiLiiiiiiii',
-        deformatKey = '<iiiLiiiiiiii',
-        maxsize = 48
     },
 
     CATCH_CARD={
@@ -1110,6 +1091,34 @@ local MJGameReq = {
         formatKey = '<AiiiiiiLLiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii',
         deformatKey = '<A32iiiiiiLLiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii',
         maxsize = 3380
+    },
+
+    MJ_ENTER_INFO={
+        lengthMap = {
+            [6] = {maxlen = 8},
+            [9] = {maxlen = 7},
+            [10] = {maxlen = 30,maxwidth = 8,complexType = 'matrix2'},
+            [11] = {maxlen = 8},
+            [12] = {maxlen = 4},
+            maxlen = 12
+        },
+        nameMap = {
+            'nRoomID',
+            'nTableNO',
+            'nTotalChair',
+            'nBaseScore',
+            'nBaseDeposit',
+            'dwUserStatus',
+            'nBout',
+            'nKickOffTime',
+            'nReserved',
+            'nResultDiff',
+            'nTotalResult',
+            'nReserve'
+        },
+        formatKey = '<iiiiiLLLLLLLLiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii',
+        deformatKey = '<iiiiiLLLLLLLLiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii',
+        maxsize = 1096
     },
 }
 

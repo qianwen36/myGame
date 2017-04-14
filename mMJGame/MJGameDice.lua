@@ -1,7 +1,7 @@
 
 local MJGameDice = class("MJGameDice")
 
-local MJGameDef                 = import("src.app.Game.mMJGame.MJGameDef")
+local MJGameDef                 = import(".MJGameDef")
 
 local windowSize = cc.Director:getInstance():getWinSize()
 
@@ -33,8 +33,11 @@ function MJGameDice:throwDices()
 
         local animation = cc.Animation:create()
         for j = 1, MJGameDef.MJ_DICES_FRAME_COUNT do
-            local path = "res/Game/GamePic/dice/dice" .. self._dicePoints[i] .."_0" .. tostring(i-1) .. "/" .. j .. ".png"
-            animation:addSpriteFrameWithFile("res/Game/GamePic/dice/dice" .. self._dicePoints[i] .."_0" .. tostring(i-1) .. "/" .. j .. ".png")
+            if j <= 8 then
+                animation:addSpriteFrameWithFile("res/Game/GamePic/dice/" .. i .. "/" .. j.. ".png")
+            else
+                animation:addSpriteFrameWithFile("res/Game/GamePic/dice/point" .. self._dicePoints[i] .. "/" .. j.. ".png")
+            end
         end
         animation:setDelayPerUnit(duration / MJGameDef.MJ_DICES_FRAME_COUNT)
         --animation:setRestoreOriginalFrame(true)

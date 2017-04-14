@@ -1,5 +1,5 @@
 
-local BaseGameUtilsInfoManager = import("src.app.Game.mBaseGame.BaseGameUtilsInfoManager")
+local BaseGameUtilsInfoManager = import("..mBaseGame.BaseGameUtilsInfoManager")
 local MJGameUtilsInfoManager = class("BaseGameUtilsInfoManager", BaseGameUtilsInfoManager)
 
 function MJGameUtilsInfoManager:ctor()
@@ -22,8 +22,8 @@ function MJGameUtilsInfoManager:getThrowWait()      if self._utilsStartData then
 function MJGameUtilsInfoManager:getDices()          if self._utilsStartData then return self._utilsStartData.nDices             end end
 function MJGameUtilsInfoManager:isAllowChi()        if self._utilsStartData then return self._utilsStartData.bAllowChi == 1     end end
 function MJGameUtilsInfoManager:isAnGangShow()      if self._utilsStartData then return self._utilsStartData.bAnGangShow == 1   end end
-function MJGameUtilsInfoManager:getCardsCount()     if self._utilsStartData then return self._utilsStartData.nInHandCount       end end
-function MJGameUtilsInfoManager:getChairCards()     if self._utilsStartData then return self._utilsStartData.nInHandID          end end
+function MJGameUtilsInfoManager:getCardsCount()     if self._utilsStartData then return self._utilsStartData.nCardsCount        end end
+function MJGameUtilsInfoManager:getChairCards()     if self._utilsStartData then return self._utilsStartData.nChairCards        end end
 function MJGameUtilsInfoManager:getHuaCards()       if self._utilsStartData then return self._utilsStartData.nHuaCards          end end
 function MJGameUtilsInfoManager:getHuaCount()       if self._utilsStartData then return self._utilsStartData.nHuaCount          end end
 function MJGameUtilsInfoManager:getPGCHWait()       if self._utilsStartData then return self._utilsStartData.nPGCHWait          end end
@@ -39,7 +39,6 @@ function MJGameUtilsInfoManager:isQuickCatch()      if self._utilsStartData then
 function MJGameUtilsInfoManager:isFanJoker()        if self._utilsStartData then return self._utilsStartData.nFanID ~= -1       end end
 function MJGameUtilsInfoManager:isJokerSortIn()     if self._utilsStartData then return self._utilsStartData.bJokerSortIn == 1  end end
 function MJGameUtilsInfoManager:isBaibanNoSort()    if self._utilsStartData then return self._utilsStartData.bBaibanNoSort == 1 end end
-function MJGameUtilsInfoManager:getActionCost()     if self._utilsStartData then return self._utilsStartData.nReserved1[1]      end end
 
 function MJGameUtilsInfoManager:setStartInfo(gameStart)
     self._utilsStartData = gameStart
@@ -53,13 +52,9 @@ function MJGameUtilsInfoManager:setTableInfo(tableInfo)
     self._utilsTableInfo = tableInfo
 end
 
-function MJGameUtilsInfoManager:setStartInfoFromTableInfo(tableInfo)        
-    for i,v in ipairs(tableInfo.nInHandID) do
-        print("nInHandID"..i.."="..v)
-    end
-    
-    self._utilsStartData.nInHandID = tableInfo.nInHandID
-    self._utilsStartData.nInHandCount = tableInfo.nInHandCount
+function MJGameUtilsInfoManager:setStartInfoFromTableInfo(tableInfo)
+    self._utilsStartData.nChairCards = tableInfo.nChairCards
+    self._utilsStartData.nCardsCount = tableInfo.nCardsCount
     self._utilsStartData.nHuaCount = tableInfo.nHuaCount
 end
 

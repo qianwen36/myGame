@@ -1,9 +1,9 @@
 
-local MJCardBase = import("src.app.Game.mMJGame.MJCardBase")
+local MJCardBase = import(".MJCardBase")
 local MJCardThrown = class("MJCardThrown", MJCardBase)
 
 function MJCardThrown:getCardResName(resIndex)
-    return     "res/GameCocosStudio/game/card/images/" ..self._resIndex.. ".png"
+    return "res/Game/GamePic/cardid/hand/" ..self._resIndex.. ".png"
 end
 
 return MJCardThrown

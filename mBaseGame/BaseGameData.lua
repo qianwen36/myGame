@@ -2,7 +2,7 @@
 local BaseGameData = class("BaseGameData")
 
 local treepack      = cc.load("treepack")
-local BaseGameReq   = import("src.app.Game.mBaseGame.BaseGameReq")
+local BaseGameReq   = import(".BaseGameReq")
 
 function BaseGameData:create()
     return BaseGameData.new()

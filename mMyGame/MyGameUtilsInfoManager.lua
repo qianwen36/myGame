@@ -1,5 +1,5 @@
 
-local MJGameUtilsInfoManager = import("src.app.Game.mMJGame.MJGameUtilsInfoManager")
+local MJGameUtilsInfoManager = import("..mMJGame.MJGameUtilsInfoManager")
 local MyGameUtilsInfoManager = class("MyGameUtilsInfoManager", MJGameUtilsInfoManager)
 
 function MyGameUtilsInfoManager:getQuan()       if self._utilsStartData then return self._utilsStartData.nQuan      end end

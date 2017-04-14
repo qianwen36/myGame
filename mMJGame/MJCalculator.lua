@@ -6,12 +6,10 @@ end
 
 require("src.cocos.cocos2d.bitExtend")
 
-local MJGameDef                                 = import("src.app.Game.mMJGame.MJGameDef")
+local MJGameDef                                 = import(".MJGameDef")
 
 cc.exports.MJCalculator                         = {}
 local MJCalculator                              = cc.exports.MJCalculator
-
-
 
 
 function MJCalculator:IS_BIT_SET(flag, mybit) return (mybit == bit._and(mybit, flag)) end

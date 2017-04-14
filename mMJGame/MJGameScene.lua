@@ -1,31 +1,31 @@
 
-local Base = import("..mBaseGame.BaseGameScene")
-local MJGameScene = class("MJGameScene", Base)
+local BaseGameScene = import("..mBaseGame.BaseGameScene")
+local MJGameScene = class("MJGameScene", BaseGameScene)
 
 
-local MJGameDef                     = import("src.app.Game.mMJGame.MJGameDef")
-local MJGameController              = import("src.app.Game.mMJGame.MJGameController")
+local MJGameDef                     = import(".MJGameDef")
+local MJGameController              = import(".MJGameController")
 
-local CanvasLayer                   = import("src.app.Game.mCommon.CanvasLayer")
-local MJGameClock                   = import("src.app.Game.mMJGame.MJGameClock")
-local MJGamePlayerManager           = import("src.app.Game.mMJGame.MJGamePlayerManager")
-local BaseGameTools                 = import("src.app.Game.mBaseGame.BaseGameTools")
-local MJGameGameInfo                = import("src.app.Game.mMJGame.MJGameInfo")
-local MJGamePlayer                  = import("src.app.Game.mMJGame.MJGamePlayer")
-local MJGameDice                    = import("src.app.Game.mMJGame.MJGameDice")
-local MJHandCards                   = import("src.app.Game.mMJGame.MJHandCards")
-local MJHandCardsManager            = import("src.app.Game.mMJGame.MJHandCardsManager")
-local MJThrownCardsManager          = import("src.app.Game.mMJGame.MJThrownCardsManager")
-local MJCastoffCards                = import("src.app.Game.mMJGame.MJCastoffCards")
-local MJCastoffCardsManager         = import("src.app.Game.mMJGame.MJCastoffCardsManager")
-local MJPGCCards                    = import("src.app.Game.mMJGame.MJPGCCards")
-local MJPGCCardsManager             = import("src.app.Game.mMJGame.MJPGCCardsManager")
-local MJPGCHManager                 = import("src.app.Game.mMJGame.MJPGCHManager")
-local MJChoseCardsManager           = import("src.app.Game.mMJGame.MJChoseCardsManager")
-local MJShowDownCards               = import("src.app.Game.mMJGame.MJShowDownCards")
-local MJShowDownCardsManager        = import("src.app.Game.mMJGame.MJShowDownCardsManager")
-local MJGameSelfInfo                = import("src.app.Game.mMJGame.MJGameSelfInfo")
-local MJGameResultPanel             = import("src.app.Game.mMJGame.MJGameResultPanel")
+local CanvasLayer                   = import("..mCommon.CanvasLayer")
+local MJGameClock                   = import(".MJGameClock")
+local MJGamePlayerManager           = import(".MJGamePlayerManager")
+local BaseGameTools                 = import("..mBaseGame.BaseGameTools")
+local MJGameGameInfo                = import(".MJGameInfo")
+local MJGamePlayer                  = import(".MJGamePlayer")
+local MJGameDice                    = import(".MJGameDice")
+local MJHandCards                   = import(".MJHandCards")
+local MJHandCardsManager            = import(".MJHandCardsManager")
+local MJThrownCardsManager          = import(".MJThrownCardsManager")
+local MJCastoffCards                = import(".MJCastoffCards")
+local MJCastoffCardsManager         = import(".MJCastoffCardsManager")
+local MJPGCCards                    = import(".MJPGCCards")
+local MJPGCCardsManager             = import(".MJPGCCardsManager")
+local MJPGCHManager                 = import(".MJPGCHManager")
+local MJChoseCardsManager           = import(".MJChoseCardsManager")
+local MJShowDownCards               = import(".MJShowDownCards")
+local MJShowDownCardsManager        = import(".MJShowDownCardsManager")
+local MJGameSelfInfo                = import(".MJGameSelfInfo")
+local MJGameResultPanel             = import(".MJGameResultPanel")
 
 local windowSize = cc.Director:getInstance():getWinSize()
 
@@ -44,17 +44,11 @@ function MJGameScene:ctor(app, name, param)
 
     self._PGCHManager               = nil
 
-    Base.ctor(self, app, name, param)
+    MJGameScene.super.ctor(self, app, name, param)
 end
 
 function MJGameScene:init()
-    Base.init(self)
-end
-
-function MJGameScene:onEnter()
-    Base.onEnter(self)
-
-    audio.stopMusic("res/Hall/Sounds/HallBG.mp3")
+    MJGameScene.super.init(self)
 end
 
 function MJGameScene:setControllerDelegate()
@@ -214,7 +208,7 @@ end
 
 function MJGameScene:setGameCtrlsAboveMJGame() end
 
-function MJGameScene:ope_ThrowDices(dicesPoint)  
+function MJGameScene:ope_ThrowDices(dicesPoint)
     self._MJGameDice = MJGameDice:create(dicesPoint, self._gameNode, self._gameController)
     if self._MJGameDice then
         self._MJGameDice:throwDices()

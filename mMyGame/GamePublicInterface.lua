@@ -4,7 +4,6 @@ if nil == cc or nil == cc.exports then
 end
 
 
-local JSON = cc.load("json").json
 require("src.cocos.cocos2d.bitExtend")
 
 cc.exports.GamePublicInterface                  = {}
@@ -54,7 +53,7 @@ end
 function GamePublicInterface:getGameString(key)
     if not self._gameString then
         local jsonGameString = cc.FileUtils:getInstance():getStringFromFile("src/app/Game/mMyGame/GameString.json")
-        self._gameString = JSON.decode(jsonGameString)
+        self._gameString = json.decode(jsonGameString)
     end
     if self._gameString then
         return self._gameString[key]

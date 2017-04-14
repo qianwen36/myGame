@@ -1,5 +1,5 @@
 
-local MJCardCastoff = import("src.app.Game.mMJGame.MJCardCastoff")
+local MJCardCastoff = import("..mMJGame.MJCardCastoff")
 local MyCardCastoff = class("MyCardCastoff", MJCardCastoff)
 
 function MyCardCastoff:getCardResName(resIndex)

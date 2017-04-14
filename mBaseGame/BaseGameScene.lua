@@ -2,22 +2,22 @@
 local Base = import("..mGameFrame.GameFrameScene")
 local BaseGameScene = class("BaseGameScene", Base)
 
-local BaseGameDef               = import("src.app.Game.mBaseGame.BaseGameDef")
-local BaseGameController        = import("src.app.Game.mBaseGame.BaseGameController")
+local BaseGameDef               = import(".BaseGameDef")
+local BaseGameController        = import(".BaseGameController")
 
-local CanvasLayer               = import("src.app.Game.mCommon.CanvasLayer")
-local BaseGameLoadingPanel      = import("src.app.Game.mBaseGame.BaseGameLoadingPanel")
-local BaseGameClock             = import("src.app.Game.mBaseGame.BaseGameClock")
-local BaseGamePlayerManager     = import("src.app.Game.mBaseGame.BaseGamePlayerManager")
-local BaseGameTools             = import("src.app.Game.mBaseGame.BaseGameTools")
-local BaseGameInfo              = import("src.app.Game.mBaseGame.BaseGameInfo")
-local BaseGameSysInfoPanel      = import("src.app.Game.mBaseGame.BaseGameSysInfoPanel")
-local BaseGamePlayer            = import("src.app.Game.mBaseGame.BaseGamePlayer")
-local BaseGameStart             = import("src.app.Game.mBaseGame.BaseGameStart")
-local BaseGameSelfInfo          = import("src.app.Game.mBaseGame.BaseGameSelfInfo")
-local BaseGameChat              = import("src.app.Game.mBaseGame.BaseGameChat")
-local BaseGameSafeBox           = import("src.app.Game.mBaseGame.BaseGameSafeBox")
-local BaseGameSetting           = import("src.app.Game.mBaseGame.BaseGameSetting")
+local CanvasLayer               = import("..mCommon.CanvasLayer")
+local BaseGameLoadingPanel      = import(".BaseGameLoadingPanel")
+local BaseGameClock             = import(".BaseGameClock")
+local BaseGamePlayerManager     = import(".BaseGamePlayerManager")
+local BaseGameTools             = import(".BaseGameTools")
+local BaseGameInfo              = import(".BaseGameInfo")
+local BaseGameSysInfoPanel      = import(".BaseGameSysInfoPanel")
+local BaseGamePlayer            = import(".BaseGamePlayer")
+local BaseGameStart             = import(".BaseGameStart")
+local BaseGameSelfInfo          = import(".BaseGameSelfInfo")
+local BaseGameChat              = import(".BaseGameChat")
+local BaseGameSafeBox           = import(".BaseGameSafeBox")
+local BaseGameSetting           = import(".BaseGameSetting")
 
 BaseGameScene.GameTags          = {
     BASEGAMETAGS_BEGIN          = 20000,
@@ -59,11 +59,11 @@ function BaseGameScene:ctor(app, name, param)
     Base.ctor(self, app, name, param)
 end
 
-function BaseGameScene:onCreate()
+function BaseGameScene:onCreate(param)
     self:setControllerDelegate()
-    self:initGameController()
+    self:initGameController(param)
 
-    Base.onCreate(self)
+    Base.onCreate(self, param)
 end
 
 function BaseGameScene:init()
@@ -84,9 +84,9 @@ function BaseGameScene:getGameController()
     return self._gameController
 end
 
-function BaseGameScene:initGameController()
+function BaseGameScene:initGameController(param)
     if self._gameController then
-        self._gameController:initGameController(self)
+        self._gameController:initGameController(self, param)
     end
 end
 

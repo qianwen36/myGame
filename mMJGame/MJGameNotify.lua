@@ -1,9 +1,9 @@
 
-local BaseGameNotify = import("src.app.Game.mBaseGame.BaseGameNotify")
+local BaseGameNotify = import("..mBaseGame.BaseGameNotify")
 local MJGameNotify = class("MJGameNotify", BaseGameNotify)
 
-local BaseGameDef                           = import("src.app.Game.mBaseGame.BaseGameDef")
-local MJGameDef                             = import("src.app.Game.mMJGame.MJGameDef")
+local BaseGameDef                           = import("..mBaseGame.BaseGameDef")
+local MJGameDef                             = import(".MJGameDef")
 
 function MJGameNotify:onNotifyReceived(request, msgType, session, data)
     if self:discardOutDateNotify(request) then return end
@@ -79,7 +79,6 @@ function MJGameNotify:onNotifyReceived(request, msgType, session, data)
         [MJGameDef.MJ_GR_NO_CARD_CATCH]     = function(data)
             if self._gameController:getSession() == session then
                 self:handleEndResponse(self._gameController:getResponse())
-                self._gameController:onResponse()
             end
         end,
     }
@@ -155,6 +154,7 @@ function MJGameNotify:handleEndResponse(response)
 
     if switchAction[response] then
         self._gameController:setResponse(self._gameController:getResWaitingNothing())
+        self._gameController:onResponse()
         switchAction[response]()
     end
 end

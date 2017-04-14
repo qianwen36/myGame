@@ -1,10 +1,10 @@
 
 local MJChoseCardsItem = class("MJChoseCardsItem", ccui.Layout)
 
-local MJGameDef                 = import("src.app.Game.mMJGame.MJGameDef")
+local MJGameDef                 = import(".MJGameDef")
 
-local MJCardChose               = import("src.app.Game.mMJGame.MJCardChose")
-local MJCalculator              = import("src.app.Game.mMJGame.MJCalculator")
+local MJCardChose               = import(".MJCardChose")
+local MJCalculator              = import(".MJCalculator")
 
 function MJChoseCardsItem:ctor(MJChoseCardsManager, baseIDs, cardID, choseCardstype)
     if not MJChoseCardsManager then printError("MJChoseCardsManager is nil!!!") return end

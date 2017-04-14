@@ -1,5 +1,5 @@
 
-local BaseGameInfo = import("src.app.Game.mBaseGame.BaseGameInfo")
+local BaseGameInfo = import("..mBaseGame.BaseGameInfo")
 local MJGameInfo = class("MJGameInfo", BaseGameInfo)
 
 function MJGameInfo:ctor(gameInfo, gameController)
@@ -64,8 +64,8 @@ function MJGameInfo:ope_ShowGameInfo(bShow)
 end
 
 function MJGameInfo:onCatchOneCard()
-    --self:setLastCardsCount(math.max(self._lastCount - 1, 0))
-    --self:updateLastCardsCount()
+    self:setLastCardsCount(math.max(self._lastCount - 1, 0))
+    self:updateLastCardsCount()
 end
 
 function MJGameInfo:setLastCardsCount(count)

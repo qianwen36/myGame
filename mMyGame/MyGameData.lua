@@ -1,11 +1,11 @@
 
-local MJGameData = import("src.app.Game.mMJGame.MJGameData")
+local MJGameData = import("..mMJGame.MJGameData")
 local MyGameData = class("MyGameData", MJGameData)
 
 local treepack          = cc.load("treepack")
-local BaseGameReq       = import("src.app.Game.mBaseGame.BaseGameReq")
-local MJGameReq         = import("src.app.Game.mMJGame.MJGameReq")
-local MyGameReq         = import("src.app.Game.mMyGame.MyGameReq")
+local BaseGameReq       = import("..mBaseGame.BaseGameReq")
+local MJGameReq         = import("..mMJGame.MJGameReq")
+local MyGameReq         = import(".MyGameReq")
 
 function MyGameData:getGameStartInfo(data)
     local info = MyGameReq["GAME_START_INFO"]

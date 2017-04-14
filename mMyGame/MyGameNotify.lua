@@ -1,9 +1,9 @@
 
-local MJGameNotify = import("src.app.Game.mMJGame.MJGameNotify")
+local MJGameNotify = import("..mMJGame.MJGameNotify")
 local MyGameNotify = class("MyGameNotify", MJGameNotify)
 
-local BaseGameDef                               = import("src.app.Game.mBaseGame.BaseGameDef")
-local MyGameDef                                 = import("src.app.Game.mMyGame.MyGameDef")
+local BaseGameDef                               = import("..mBaseGame.BaseGameDef")
+local MyGameDef                                 = import(".MyGameDef")
 
 function MyGameNotify:onNotifyReceived(request, msgType, session, data)
     if self:discardOutDateNotify(request) then return end

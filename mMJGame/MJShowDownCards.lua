@@ -1,8 +1,8 @@
 
 local MJShowDownCards = class("MJShowDownCards")
 
-local MJCardShowDown            = import("src.app.Game.mMJGame.MJCardShowDown")
-local MJCalculator              = import("src.app.Game.mMJGame.MJCalculator")
+local MJCardShowDown            = import(".MJCardShowDown")
+local MJCalculator              = import(".MJCalculator")
 
 function MJShowDownCards:create(showDownCardsPanel, drawIndex, gameController)
     return MJShowDownCards.new(showDownCardsPanel, drawIndex, gameController)

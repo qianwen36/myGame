@@ -1,21 +1,19 @@
 
 local MJCardBase = class("MJCardBase")
 
-local MJGameDef                 = import("src.app.Game.mMJGame.MJGameDef")
+local MJGameDef                 = import(".MJGameDef")
 
-local MJCalculator              = import("src.app.Game.mMJGame.MJCalculator")
+local MJCalculator              = import(".MJCalculator")
 
-function MJCardBase:create(MJCardNode, drawIndex, cardDelegate)
-    return MJCardBase.new(MJCardNode, drawIndex, cardDelegate)
+function MJCardBase:create(MJCardSprite, drawIndex, cardDelegate)
+    return MJCardBase.new(MJCardSprite, drawIndex, cardDelegate)
 end
 
-function MJCardBase:ctor(MJCardNode, drawIndex, cardDelegate)
+function MJCardBase:ctor(MJCardSprite, drawIndex, cardDelegate)
     if not cardDelegate then printError("cardDelegate is nil!!!") return end
     self._cardDelegate          = cardDelegate
-    self._MJCardNode            = MJCardNode  
-    
-    
-    self._MJCardSprite          = nil
+
+    self._MJCardSprite          = MJCardSprite
     self._drawIndex             = drawIndex
 
     self._MJID                  = -1
@@ -26,22 +24,14 @@ function MJCardBase:ctor(MJCardNode, drawIndex, cardDelegate)
 end
 
 function MJCardBase:init()
-    if not self._MJCardNode then return end
-
-    self._MJCardSprite          = self._MJCardNode:getChildByName("card")
     if not self._MJCardSprite then return end
-    
 
-    
-    self._cardFaceSprite        = self._MJCardSprite:getChildByName("card_flower")
---[[    if not self._MJCardSprite then return end
-    
     self._cardFaceSprite = cc.Sprite:create()
     if self._cardFaceSprite then
         self._cardFaceSprite:setAnchorPoint(1, 1)
         self._MJCardSprite:addChild(self._cardFaceSprite)
         self._cardFaceSprite:setPosition(cc.p(self._MJCardSprite:getContentSize().width, self._MJCardSprite:getContentSize().height))
-    end]]
+    end
 end
 
 function MJCardBase:resetCard()

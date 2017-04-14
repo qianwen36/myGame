@@ -1,10 +1,10 @@
 
 local MJChoseCardsManager = class("MJChoseCardsManager")
 
-local MJGameDef                 = import("src.app.Game.mMJGame.MJGameDef")
+local MJGameDef                 = import(".MJGameDef")
 
-local MJChoseCardsItem          = import("src.app.Game.mMJGame.MJChoseCardsItem")
-local MJCalculator              = import("src.app.Game.mMJGame.MJCalculator")
+local MJChoseCardsItem          = import(".MJChoseCardsItem")
+local MJCalculator              = import(".MJCalculator")
 
 function MJChoseCardsManager:create(choseCardsPanel, gameController)
     return MJChoseCardsManager.new(choseCardsPanel, gameController)

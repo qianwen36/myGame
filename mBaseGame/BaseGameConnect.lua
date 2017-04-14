@@ -3,8 +3,8 @@ local BaseGameConnect = class("BaseGameConnect")
 
 local treepack                              = cc.load("treepack")
 
-local BaseGameReq                           = import("src.app.Game.mBaseGame.BaseGameReq")
-local BaseGameDef                           = import("src.app.Game.mBaseGame.BaseGameDef")
+local BaseGameReq                           = import(".BaseGameReq")
+local BaseGameDef                           = import(".BaseGameDef")
 
 local targetPlatform = cc.Application:getInstance():getTargetPlatform()
 

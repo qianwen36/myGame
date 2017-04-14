@@ -1,9 +1,9 @@
 
-local MJPGCCardsItem = import("src.app.Game.mMJGame.MJPGCCardsItem")
+local MJPGCCardsItem = import("..mMJGame.MJPGCCardsItem")
 local MyPGCCardsItem = class("MyPGCCardsItem", MJPGCCardsItem)
 
-local MJGameDef                 = import("src.app.Game.mMJGame.MJGameDef")
-local MyCardPGC                 = import("src.app.Game.mMyGame.MyCardPGC")
+local MJGameDef                 = import("..mMJGame.MJGameDef")
+local MyCardPGC                 = import(".MyCardPGC")
 
 local MJPGC_Table               = {{1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}}
 local MJPGC_CARD_Table          = {{1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}}

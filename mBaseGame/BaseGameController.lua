@@ -6,24 +6,24 @@ end
 
 require("src.cocos.cocos2d.bitExtend")
 
-local BaseGameDef                               = import(".mBaseGame.BaseGameDef")
+local BaseGameDef                               = import(".BaseGameDef")
 
 cc.exports.GameController                       = {}
 local BaseGameController                        = cc.exports.GameController
 
-local BaseGameData                              = import(".mBaseGame.BaseGameData")
-local BaseGamePlayerInfoManager                 = import(".mBaseGame.BaseGamePlayerInfoManager")
-local BaseGameUtilsInfoManager                  = import(".mBaseGame.BaseGameUtilsInfoManager")
-local BaseGameConnect                           = import(".mBaseGame.BaseGameConnect")
-local BaseGameNotify                            = import(".mBaseGame.BaseGameNotify")
+local BaseGameData                              = import(".BaseGameData")
+local BaseGamePlayerInfoManager                 = import(".BaseGamePlayerInfoManager")
+local BaseGameUtilsInfoManager                  = import(".BaseGameUtilsInfoManager")
+local BaseGameConnect                           = import(".BaseGameConnect")
+local BaseGameNotify                            = import(".BaseGameNotify")
 
 local GamePublicInterface                       = import("..mMyGame.GamePublicInterface")
 
-function BaseGameController:initGameController(baseGameScene)
+function BaseGameController:initGameController(baseGameScene, param)
     if not baseGameScene then printError("baseGameScene is nil!!!") return end
 
     self:resetController()
-    self.params = baseGameScene:getData() --{enterRoomInfo, playerInfo, tableInfo}
+    self.params_ = param --{enterRoomInfo, playerInfo, tableInfo}
     self._baseGameScene = baseGameScene
 
     self:createGameData()
@@ -120,7 +120,7 @@ function BaseGameController:setSelfInfo()
 
     local params = self.params_
     local playerInfo = params.playerInfo
-    local playerTableInfo = params.tableInfo
+    local playerTableInfo = params.tableInfo.pp
 
     local selfInfo = {}
     selfInfo.nUserID        = playerInfo.nUserID
@@ -158,12 +158,12 @@ function BaseGameController:setUtilsInfo()
     local RoomInfo = params.roomData
 
     local utilsInfo = {}
-    utilsInfo.szHardID          = playerInfo.szHardID
+    utilsInfo.szHardID          = params.deviceInfo.szHardID
     utilsInfo.nRoomTokenID      = playerEnterGameOK.nRoomTokenID
     utilsInfo.nMbNetType        = DeviceUtils:getInstance():getNetworkType()
     utilsInfo.bLookOn           = 0
-    utilsInfo.nGameID           = playerInfo.nGameID
-    utilsInfo.nRoomID           = playerInfo.nRoomID
+    utilsInfo.nGameID           = RoomInfo.nGameID
+    utilsInfo.nRoomID           = RoomInfo.nRoomID
     utilsInfo.nRoomInfo         = RoomInfo
 
     dump(utilsInfo)
@@ -1124,7 +1124,7 @@ function BaseGameController:hardIDMismatch()
     local function pop()
         self:alert2HallScene("G_ENTERGAME_HARDIDMISMATCH")
     end
-    my.scheduleOnce(pop, 1)
+    self._baseGameScene:nextSchedule(pop, 1)
 end
 
 function BaseGameController:onAllStandBy(data)
@@ -1732,7 +1732,7 @@ function BaseGameController:onEnterGameFailed()
     local function pop()
         self:alert2HallScene(keyStr(alter))
     end
-    my.scheduleOnce(pop, 1)
+    self._baseGameScene:nextSchedule(pop, 1)
 end
 
 function BaseGameController:onLeaveGameFailed()
@@ -1800,7 +1800,7 @@ end
 
 function BaseGameController:tipMessageByUTF8Str(msg)
     if self._baseGameScene then
-        my.informPluginByName({pluginName='ToastPlugin',params={tipString=msg,removeTime=2.5}})
+        self._baseGameScene:showToast(msg, 2.5)
     end
 end
 
@@ -1811,31 +1811,11 @@ end
 
 function BaseGameController:popChoseDialog(content, title, cancelTitle, cancelCallback, okTitle, okCallback, needCloseBtn)
     if self._baseGameScene then
-        my.informPluginByName({
-            pluginName="ChooseDialog",
-            params={
-                tipContent=content,
-                tipTitle=title,
-                cancelBtTitle=cancelTitle,
-                onCancel=cancelCallback,
-                okBtTitle=okTitle,
-                onOk=okCallback,
-                closeBtVisible=needCloseBtn
-            }})
     end
 end
 
 function BaseGameController:popSureDialog(content, title, okTitle, okCallback, needCloseBtn)
     if self._baseGameScene then
-        my.informPluginByName({
-            pluginName="SureDialog",
-            params={
-                tipContent=content,
-                tipTitle=title,
-                okBtTitle=okTitle,
-                onOk=okCallback,
-                closeBtVisible=needCloseBtn
-            }})
     end
 end
 

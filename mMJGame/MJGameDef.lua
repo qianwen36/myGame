@@ -6,7 +6,7 @@ end
 
 cc.exports.MJGameDef                        = {
     MJ_TOTAL_PLAYERS                        = 4,
-    MJ_DICES_FRAME_COUNT                    = 9,
+    MJ_DICES_FRAME_COUNT                    = 11,
     MJ_MAX_CARDID                           = 144,
     MJ_TOTAL_CARDS                          = 152,
     MJ_CHAIR_CARDS                          = 32,
@@ -182,7 +182,7 @@ cc.exports.MJGameDef                        = {
 }
 
 
-local GamePublicInterface = import("src.app.Game.mMyGame.GamePublicInterface")
+local GamePublicInterface = import("..mMyGame.GamePublicInterface")
 
 if GamePublicInterface and GamePublicInterface:IS_FRAME_1() then
     cc.exports.MJGameDef.MJ_GR_THROW_CARDS = 212080

@@ -64,7 +64,6 @@ end
 function MJPGCCardsManager:getSelfPengCardIDs()
     local selfPengCardIDs = nil
     if self._MJPGCCards[self._gameController:getMyDrawIndex()] then
-    
         selfPengCardIDs = self._MJPGCCards[self._gameController:getMyDrawIndex()]:getPengCardIDs()
     end
     return selfPengCardIDs

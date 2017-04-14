@@ -1,8 +1,8 @@
 
-local MJCastoffCards = import("src.app.Game.mMJGame.MJCastoffCards")
+local MJCastoffCards = import("..mMJGame.MJCastoffCards")
 local MyCastoffCards = class("MyCastoffCards", MJCastoffCards)
 
-local MyCardCastoff             = import("src.app.Game.mMyGame.MyCardCastoff")
+local MyCardCastoff             = import(".MyCardCastoff")
 
 function MyCastoffCards:init()
     if not self._castoffCardsPanel then return end

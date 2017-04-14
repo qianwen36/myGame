@@ -1,5 +1,5 @@
 
-local BaseGameSelfInfo = import("src.app.Game.mBaseGame.BaseGameSelfInfo")
+local BaseGameSelfInfo = import("..mBaseGame.BaseGameSelfInfo")
 local MJGameSelfInfo = class("MJGameSelfInfo", BaseGameSelfInfo)
 
 function MJGameSelfInfo:ctor(selfInfoPanel)

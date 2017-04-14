@@ -4,19 +4,19 @@ if nil == cc or nil == cc.exports then
 end
 
 
-local BaseGameDef                               = import("src.app.Game.mBaseGame.BaseGameDef")
-local MJGameDef                                 = import("src.app.Game.mMJGame.MJGameDef")
-local BaseGameController                        = import("src.app.Game.mBaseGame.BaseGameController")
+local BaseGameDef                               = import("..mBaseGame.BaseGameDef")
+local MJGameDef                                 = import(".MJGameDef")
+local BaseGameController                        = import("..mBaseGame.BaseGameController")
 
 cc.exports.MJGameController                     = {}
 local MJGameController                          = cc.exports.MJGameController
 
-local MJGameData                                = import("src.app.Game.mMJGame.MJGameData")
-local MJGameUtilsInfoManager                    = import("src.app.Game.mMJGame.MJGameUtilsInfoManager")
-local MJGameConnect                             = import("src.app.Game.mMJGame.MJGameConnect")
-local MJGameNotify                              = import("src.app.Game.mMJGame.MJGameNotify")
+local MJGameData                                = import(".MJGameData")
+local MJGameUtilsInfoManager                    = import(".MJGameUtilsInfoManager")
+local MJGameConnect                             = import(".MJGameConnect")
+local MJGameNotify                              = import(".MJGameNotify")
 
-local MJCalculator                              = import("src.app.Game.mMJGame.MJCalculator")
+local MJCalculator                              = import(".MJCalculator")
 
 
 MJGameController.super = BaseGameController
@@ -32,13 +32,13 @@ function MJGameController:createUtilsInfoManager()
     self:setUtilsInfo()
 end
 
-function BaseGameController:initManagerAboveBaseGame()
+function MJGameController:initManagerAboveBaseGame()
     self:initManagerAboveMJGame()
 end
 
-function BaseGameController:initManagerAboveMJGame() end
+function MJGameController:initManagerAboveMJGame() end
 
-function BaseGameController:setConnect()
+function MJGameController:setConnect()
     self._baseGameConnect = MJGameConnect:create(self)
 end
 
@@ -51,37 +51,6 @@ function MJGameController:getMJTotalCards()
 end
 
 function MJGameController:getNextIndex(index)
-    --[[
-    if self:getTableChairCount() - 1 == index then
-    return self:getTableChairCount()
-    else
-    return (index + 1) % self:getTableChairCount()
-    end
-    return 0
-    ]]
-
-    if 1 == index then
-        return self:getTableChairCount()
-    else
-        return (index + self:getTableChairCount()-1) % self:getTableChairCount()
-    end
-
-end
-
-function MJGameController:getNextChair(chair)
-    --return self:getNextIndex(chair + 1) - 1
-    return (chair + self:getTableChairCount() - 1) % self:getTableChairCount()
-end
-
-function MJGameController:getPreIndex(index)
-    --[[
-    if 1 == index then
-    return self:getTableChairCount()
-    else
-    return index - 1
-    end
-    return 0
-    ]]
     if self:getTableChairCount() - 1 == index then
         return self:getTableChairCount()
     else
@@ -90,10 +59,21 @@ function MJGameController:getPreIndex(index)
     return 0
 end
 
+function MJGameController:getNextChair(chair)
+    return self:getNextIndex(chair + 1) - 1
+end
+
+function MJGameController:getPreIndex(index)
+    if 1 == index then
+        return self:getTableChairCount()
+    else
+        return index - 1
+    end
+    return 0
+end
+
 function MJGameController:getPreChair(chair)
-    --return self:getPreIndex(chair + 1) - 1
-    --return self:getPreIndex(chair)
-    return (chair + 1) % self:getTableChairCount()
+    return self:getPreIndex(chair + 1) - 1
 end
 
 function MJGameController:onTouchBegan(x, y)
@@ -298,14 +278,14 @@ end
 
 function MJGameController:showBanker()
     local drawIndex = self:rul_GetDrawIndexByChairNO(self:getBanker())
-    --if self:getMyDrawIndex() == drawIndex then
-    --    self:showSelfBanker(true)
-    --else
+    if self:getMyDrawIndex() == drawIndex then
+        self:showSelfBanker(true)
+    else
         local playerManager = self._baseGameScene:getPlayerManager()
         if playerManager and 0 < drawIndex then
             playerManager:showBanker(drawIndex)
         end
-    --end
+    end
 end
 
 function MJGameController:ope_DealCard()
@@ -359,13 +339,12 @@ function MJGameController:ope_StartPlay()
         end
     end
 
---  self:ope_ShowFlowers()
+    self:ope_ShowFlowers()
     self:ope_ShowGameInfo(true)
 
     local MJPGCHManager = self._baseGameScene:getMJPGCHManager()
     if MJPGCHManager and self._baseGameUtilsInfoManager then
         MJPGCHManager:setCurrentFlags(self._baseGameUtilsInfoManager:getCurrentFlags())
-        MJPGCHManager:setCanSpecialCardIndex(self._baseGameUtilsInfoManager:getCanSpecialGangIndex())
     end
 
     if drawIndex == self:getMyDrawIndex() and self:isClockPointToSelf() then
@@ -525,7 +504,7 @@ function MJGameController:onGameClockZero()
 
             if MJHandCardsManager:isNeedThrow(self:getMyDrawIndex()) then
                 self:onThrowCard(self:getUselessCardID())
-                self:ope_AutoPlay(true)
+                --self:ope_AutoPlay(true)
             else
                 self:onCatchCard()
             end
@@ -693,7 +672,7 @@ function MJGameController:reqAnGangCard(cardChair, cardID, baseIDs)
         self._baseGameConnect:reqPreGangCard(cardChair, cardID, baseIDs, MJGameDef.MJ_GANG_AN)
         self._baseGameConnect:reqAnGangCard(cardChair, cardID, baseIDs)
 
-        self:playOperationEffectByName("Bu", self:getPlayerNickSexByIndex(self:getMyDrawIndex()))
+        self:playOperationEffectByName("Gang", self:getPlayerNickSexByIndex(self:getMyDrawIndex()))
     end
 end
 
@@ -704,7 +683,7 @@ function MJGameController:reqPnGangCard(cardChair, cardID, baseIDs)
         self._baseGameConnect:reqPreGangCard(cardChair, cardID, baseIDs, MJGameDef.MJ_GANG_PN)
         self._baseGameConnect:reqPnGangCard(cardChair, cardID, baseIDs)
 
-        self:playOperationEffectByName("Bu", self:getPlayerNickSexByIndex(self:getMyDrawIndex()))
+        self:playOperationEffectByName("Gang", self:getPlayerNickSexByIndex(self:getMyDrawIndex()))
     end
 end
 
@@ -795,7 +774,7 @@ function MJGameController:reqMnGangCard(cardChair, cardID, baseIDs)
         self._baseGameConnect:reqPreGangCard(cardChair, cardID, baseIDs, MJGameDef.MJ_GANG_MN)
         self._baseGameConnect:reqMnGangCard(cardChair, cardID, baseIDs)
 
-        self:playOperationEffectByName("Bu", self:getPlayerNickSexByIndex(self:getMyDrawIndex()))
+        self:playOperationEffectByName("Gang", self:getPlayerNickSexByIndex(self:getMyDrawIndex()))
     end
 end
 
@@ -1000,13 +979,13 @@ function MJGameController:clearGameTable()
         gameTools:onGameWin()
     end
 
-    self:ope_AutoPlay(false)
+    --self:ope_AutoPlay(false)
 
     self:clearPlayerFlower()
     self:clearPlayerBanker()
 
     self:ope_ShowGameInfo(false)
-    --self:hideGameResultInfo()
+    self:hideGameResultInfo()
 
     MJGameController.super.clearGameTable(self)
 end
@@ -1084,13 +1063,32 @@ function MJGameController:onDXXW()
     if MJHandCardsManager then
         MJHandCardsManager:resetHandCardsManager()
     end
-    self:ope_AutoPlay(false)
+    --self:ope_AutoPlay(false)
 
     if self._baseGameUtilsInfoManager then
         local status = self._baseGameUtilsInfoManager:getStatus()
         if 0 == status then
             self:gameStop()
             self:clearGameTable()
+
+            if self:isRandomRoom() then
+                if self:isWaitArrangeTableShow() then
+                    local gameTools = self._baseGameScene:getTools()
+                    if gameTools then
+                        gameTools:disableSafeBox()
+                    end
+                end
+            else
+                local selfInfo = self._baseGameScene:getSelfInfo()
+                if selfInfo then
+                    if selfInfo:isSelfReadyShow() then
+                        local gameTools = self._baseGameScene:getTools()
+                        if gameTools then
+                            gameTools:disableSafeBox()
+                        end
+                    end
+                end
+            end
         else
             if self:IS_BIT_SET(status, BaseGameDef.BASEGAME_TS_PLAYING_GAME) then
                 self:gameRun()
@@ -1264,7 +1262,6 @@ function MJGameController:onGameStart(data)
         selfInfo:onGameStart()
     end
 
-    
     local playerManager = self._baseGameScene:getPlayerManager()
     if playerManager then
         playerManager:onGameStart()
@@ -1305,6 +1302,8 @@ function MJGameController:onGameStart(data)
         setting:showSetting(false)
     end
 
+    --self:ope_AutoPlay(false)
+
     if gameStart then
         if self._baseGameUtilsInfoManager then
             self._baseGameUtilsInfoManager:setStartInfo(gameStart)
@@ -1326,7 +1325,6 @@ function MJGameController:onGameStart(data)
                     local drawIndex = self:rul_GetDrawIndexByChairNO(i - 1)
                     if 0 < drawIndex then
                         MJHandCardsManager:setHandCardsCount(drawIndex, cardsCounts[i])
-                        MJHandCardsManager:setHandSpecialGangCardsCount(drawIndex,0)
                         if drawIndex == self:getMyDrawIndex() then
                             local chairCards = self._baseGameUtilsInfoManager:getChairCards()
                             MJHandCardsManager:setSelfHandCards(chairCards)
@@ -1533,13 +1531,7 @@ function MJGameController:onCardCaught(data)
                     MJPGCHManager:hidePGCHBtns()
                 end
             end
-			
-			local gameInfo = self._baseGameScene:getGameInfo()
-			if gameInfo then
-				gameInfo:setLastCardsCount(cardCaught.nReserved[1])
-				gameInfo:updateLastCardsCount()
-			end 
-			
+
             local MJChoseCardsManager = self._baseGameScene:getMJChoseCardsManager()
             if MJChoseCardsManager then
                 MJChoseCardsManager:resetMJChoseCardsManager()
@@ -1720,11 +1712,6 @@ function MJGameController:onCardPeng(data)
                 clock:hideClock()
             end
 
-            local MJPGCHManager = self._baseGameScene:getMJPGCHManager()
-            if MJPGCHManager then
-                MJPGCHManager:hidePGCHBtns()
-            end
-            
             local handCardsManager = self._baseGameScene:getMJHandCardsManager()
             if handCardsManager then
                 handCardsManager:onCardPeng(drawIndex, cardPeng.nBaseIDs)
@@ -1750,7 +1737,6 @@ function MJGameController:onCardPeng(data)
                 if self._baseGameUtilsInfoManager then
                     throwWait = self._baseGameUtilsInfoManager:getThrowWait()
                 end
-                clock:moveClockHandTo(pengIndex)
                 clock:start(throwWait)
             end
         end
@@ -1771,22 +1757,6 @@ function MJGameController:onCardMnGang(data)
                 clock:hideClock()
             end
 
-			local gameInfo = self._baseGameScene:getGameInfo()
-			if gameInfo then
-				gameInfo:setLastCardsCount(cardMnGang.nReserved[1])
-				gameInfo:updateLastCardsCount()
-			end 
-			
-            local MJPGCHManager = self._baseGameScene:getMJPGCHManager()
-            if MJPGCHManager then
-                MJPGCHManager:hidePGCHBtns()
-            end
-            
-            local playerManager = self._baseGameScene:getPlayerManager()
-            if playerManager then
-                playerManager:ope_playPGCHAni(drawIndex, "bu")
-            end
-            
             local handCardsManager = self._baseGameScene:getMJHandCardsManager()
             if handCardsManager then
                 handCardsManager:onCardMnGang(drawIndex, cardMnGang.nBaseIDs, cardMnGang.nCardGot)
@@ -1812,7 +1782,6 @@ function MJGameController:onCardMnGang(data)
                 if self._baseGameUtilsInfoManager then
                     throwWait = self._baseGameUtilsInfoManager:getThrowWait()
                 end
-                clock:moveClockHandTo(drawIndex)
                 clock:start(throwWait)
             end
         end
@@ -1833,25 +1802,6 @@ function MJGameController:onCardAnGang(data)
                 clock:hideClock()
             end
 
-            self:playOperationEffectByName("Bu", self:getPlayerNickSexByIndex(drawIndex))
-            
-			
-			local gameInfo = self._baseGameScene:getGameInfo()
-			if gameInfo then
-				gameInfo:setLastCardsCount(cardAnGang.nReserved[1])
-				gameInfo:updateLastCardsCount()
-			end 
-			
-            local MJPGCHManager = self._baseGameScene:getMJPGCHManager()
-            if MJPGCHManager then
-                MJPGCHManager:hidePGCHBtns()
-            end
-            
-            local playerManager = self._baseGameScene:getPlayerManager()
-            if playerManager then
-                playerManager:ope_playPGCHAni(drawIndex, "bu")
-            end
-            
             local MJChoseCardsManager = self._baseGameScene:getMJChoseCardsManager()
             if MJChoseCardsManager then
                 MJChoseCardsManager:resetMJChoseCardsManager()
@@ -1874,7 +1824,6 @@ function MJGameController:onCardAnGang(data)
 
             if clock then
                 local throwWait = clock:getDigit() + MJGameDef.MJ_ADD_SECOND_AFTER_GANG
-                clock:moveClockHandTo(drawIndex)
                 clock:start(throwWait)
             end
         end
@@ -1893,24 +1842,6 @@ function MJGameController:onCardPnGang(data)
             local clock = self._baseGameScene:getClock()
             if clock then
                 clock:hideClock()
-            end
-            
-            self:playOperationEffectByName("Bu", self:getPlayerNickSexByIndex(drawIndex))
-            
-			local gameInfo = self._baseGameScene:getGameInfo()
-			if gameInfo then
-				gameInfo:setLastCardsCount(cardPnGang.nReserved[1])
-				gameInfo:updateLastCardsCount()
-			end 
-			
-            local MJPGCHManager = self._baseGameScene:getMJPGCHManager()
-            if MJPGCHManager then
-                MJPGCHManager:hidePGCHBtns()
-            end
-            
-            local playerManager = self._baseGameScene:getPlayerManager()
-            if playerManager then
-                playerManager:ope_playPGCHAni(drawIndex, "bu")
             end
 
             local MJChoseCardsManager = self._baseGameScene:getMJChoseCardsManager()
@@ -1935,7 +1866,6 @@ function MJGameController:onCardPnGang(data)
 
             if clock then
                 local throwWait = clock:getDigit() + MJGameDef.MJ_ADD_SECOND_AFTER_GANG
-                clock:moveClockHandTo(drawIndex)
                 clock:start(throwWait)
             end
         end
@@ -1956,11 +1886,6 @@ function MJGameController:onCardChi(data)
                 clock:hideClock()
             end
 
-            local MJPGCHManager = self._baseGameScene:getMJPGCHManager()
-            if MJPGCHManager then
-                MJPGCHManager:hidePGCHBtns()
-            end
-            
             local MJChoseCardsManager = self._baseGameScene:getMJChoseCardsManager()
             if MJChoseCardsManager then
                 MJChoseCardsManager:resetMJChoseCardsManager()
@@ -1993,7 +1918,6 @@ function MJGameController:onCardChi(data)
                 if self._baseGameUtilsInfoManager then
                     throwWait = self._baseGameUtilsInfoManager:getThrowWait()
                 end
-                clock:moveClockHandTo(drawIndex)
                 clock:start(throwWait)
             end
         end
@@ -2014,6 +1938,7 @@ function MJGameController:onCardGuo()
 end
 
 function MJGameController:onGameWin(data)
+    self:stopResponseTimer()
     self:gameStop()
 
     if not self:isResume() then
@@ -2050,7 +1975,7 @@ function MJGameController:onGameWin(data)
         setting:showSetting(false)
     end
 
-    self:ope_AutoPlay(false)
+    --self:ope_AutoPlay(false)
 
     local gameWin = nil
     if self._baseGameData then
@@ -2059,10 +1984,11 @@ function MJGameController:onGameWin(data)
     if gameWin then
         for i = 1, self:getTableChairCount() do
             local deposit = gameWin.nDepositDiffs[i]
+            local score = gameWin.nScoreDiffs[i]
             local drawIndex = self:rul_GetDrawIndexByChairNO(i - 1)
             if 0 < drawIndex then
                 self:addPlayerDeposit(drawIndex, deposit)
-
+                self:addPlayerScore(drawIndex, score)
                 self:addPlayerBoutInfo(drawIndex, deposit)
             end
         end
@@ -2070,7 +1996,6 @@ function MJGameController:onGameWin(data)
         self:showGameResultInfo(gameWin)
     end
 end
-
 
 function MJGameController:showGameResultInfo(gameWin)
     self._baseGameScene:showResultLayer(gameWin)
@@ -2179,7 +2104,6 @@ function MJGameController:rspCardPeng(data)
             if self._baseGameUtilsInfoManager then
                 throwWait = self._baseGameUtilsInfoManager:getThrowWait()
             end
-            clock:moveClockHandTo(drawIndex)
             clock:start(throwWait)
         end
     end
@@ -2204,17 +2128,6 @@ function MJGameController:rspCardMnGang(data)
             local clock = self._baseGameScene:getClock()
             if clock then
                 clock:hideClock()
-            end
-            
-			local gameInfo = self._baseGameScene:getGameInfo()
-			if gameInfo then
-				gameInfo:setLastCardsCount(cardCaught.nReserved[1])
-				gameInfo:updateLastCardsCount()
-			end 
-			
-            local playerManager = self._baseGameScene:getPlayerManager()
-            if playerManager then
-                playerManager:ope_playPGCHAni(drawIndex, "bu")
             end
 
             local thrownCardsManager = self._baseGameScene:getMJThrownCardsManager()
@@ -2253,7 +2166,6 @@ function MJGameController:rspCardMnGang(data)
                 if self._baseGameUtilsInfoManager then
                     throwWait = self._baseGameUtilsInfoManager:getThrowWait()
                 end
-                clock:moveClockHandTo(drawIndex)
                 clock:start(throwWait)
             end
         end
@@ -2279,17 +2191,6 @@ function MJGameController:rspCardAnGang(data)
             local clock = self._baseGameScene:getClock()
             if clock then
                 clock:hideClock()
-            end
-            
-			local gameInfo = self._baseGameScene:getGameInfo()
-			if gameInfo then
-				gameInfo:setLastCardsCount(cardCaught.nReserved[1])
-				gameInfo:updateLastCardsCount()
-			end 
-			
-            local playerManager = self._baseGameScene:getPlayerManager()
-            if playerManager then
-                playerManager:ope_playPGCHAni(drawIndex, "bu")
             end
 
             local thrownCardsManager = self._baseGameScene:getMJThrownCardsManager()
@@ -2325,7 +2226,6 @@ function MJGameController:rspCardAnGang(data)
 
             if clock then
                 local throwWait = clock:getDigit() + MJGameDef.MJ_ADD_SECOND_AFTER_GANG
-                clock:moveClockHandTo(drawIndex)
                 clock:start(throwWait)
             end
         end
@@ -2333,12 +2233,12 @@ function MJGameController:rspCardAnGang(data)
 end
 
 function MJGameController:rspCardPnGang(data)
-    local myCardCaught = nil
+    local cardCaught = nil
     if self._baseGameData then
-        myCardCaught = self._baseGameData:getMyCardCaughtInfo(data)
+        cardCaught = self._baseGameData:getCardCaughtInfo(data)
     end
 
-    if myCardCaught then
+    if cardCaught then
         local MJPGCHManager = self._baseGameScene:getMJPGCHManager()
         if MJPGCHManager then
             MJPGCHManager:clearWaitingOperation()
@@ -2353,16 +2253,6 @@ function MJGameController:rspCardPnGang(data)
                 clock:hideClock()
             end
 
-			local gameInfo = self._baseGameScene:getGameInfo()
-			if gameInfo then
-				gameInfo:setLastCardsCount(cardCaught.nReserved[1])
-				gameInfo:updateLastCardsCount()
-			end 
-            local playerManager = self._baseGameScene:getPlayerManager()
-            if playerManager then
-                playerManager:ope_playPGCHAni(drawIndex, "bu")
-            end
-            
             local thrownCardsManager = self._baseGameScene:getMJThrownCardsManager()
             if thrownCardsManager then
                 thrownCardsManager:clearThrownCards()
@@ -2375,13 +2265,13 @@ function MJGameController:rspCardPnGang(data)
 
             local handCardsManager = self._baseGameScene:getMJHandCardsManager()
             if handCardsManager then
-                handCardsManager:onCardPnGang(drawIndex, cardID, myCardCaught.nCardID)
-                --                handCardsManager:ope_resetSelfCardsPos()
-                --                handCardsManager:ope_resetSelfCardsState()
+                handCardsManager:onCardPnGang(drawIndex, cardID, cardCaught.nCardID)
+--                handCardsManager:ope_resetSelfCardsPos()
+--                handCardsManager:ope_resetSelfCardsState()
             end
 
             if MJPGCHManager then
-                MJPGCHManager:setCardCaught(myCardCaught)
+                MJPGCHManager:setCardCaught(cardCaught)
             end
 
             local sourceIndex = 1
@@ -2396,7 +2286,6 @@ function MJGameController:rspCardPnGang(data)
 
             if clock then
                 local throwWait = clock:getDigit() + MJGameDef.MJ_ADD_SECOND_AFTER_GANG
-                clock:moveClockHandTo(drawIndex)
                 clock:start(throwWait)
             end
         end
@@ -2445,7 +2334,6 @@ function MJGameController:rspCardChi(data)
             if self._baseGameUtilsInfoManager then
                 throwWait = self._baseGameUtilsInfoManager:getThrowWait()
             end
-            clock:moveClockHandTo(drawIndex)
             clock:start(throwWait)
         end
     end
@@ -2484,12 +2372,12 @@ function MJGameController:rspCardHua(data)
 end
 
 function MJGameController:rspCardCaught(data)
-    local myCardCaught = nil
+    local cardCaught = nil
     if self._baseGameData then
-        myCardCaught = self._baseGameData:getMyCardCaughtInfo(data)
+        cardCaught = self._baseGameData:getCardCaughtInfo(data)
     end
 
-    if myCardCaught then
+    if cardCaught then
         local MJPGCHManager = self._baseGameScene:getMJPGCHManager()
         if MJPGCHManager then
             MJPGCHManager:hidePGCHBtns()
@@ -2509,12 +2397,6 @@ function MJGameController:rspCardCaught(data)
         end
         local drawIndex = self:getMyDrawIndex()
 
-		local gameInfo = self._baseGameScene:getGameInfo()
-		if gameInfo then
-			gameInfo:setLastCardsCount(myCardCaught.nReserved[1])
-			gameInfo:updateLastCardsCount()
-		end 
-			
         -- Deal with thrown card
         local lastThrownCardID = nil
         local preIndex = self:getPreIndex(drawIndex)
@@ -2533,12 +2415,12 @@ function MJGameController:rspCardCaught(data)
         -- Deal with hand cards
         local handCardsManager = self._baseGameScene:getMJHandCardsManager()
         if handCardsManager then
-            handCardsManager:onCardCaught(self:getMyDrawIndex(), myCardCaught.nCardID)
+            handCardsManager:onCardCaught(self:getMyDrawIndex(), cardCaught.nCardID)
         end
 
         local MJPGCHManager = self._baseGameScene:getMJPGCHManager()
         if MJPGCHManager then
-            MJPGCHManager:setCardCaught(myCardCaught)
+            MJPGCHManager:setCardCaught(cardCaught)
         end
 
         -- Deal with clock
@@ -2560,7 +2442,7 @@ function MJGameController:rspCardCaught(data)
     if MJPGCHManager then
         MJPGCHManager:clearWaitingOperation()
         MJPGCHManager:clearQiangGangInfo()
-        MJPGCHManager:setCardCaught(myCardCaught)
+        MJPGCHManager:setCardCaught(cardCaught)
     end
 end
 
@@ -2593,7 +2475,7 @@ function MJGameController:onCardPreGangOK(data)
     end
 
     if cardPreGangOK then
-        --self:playOperationEffectByName("PreGang", self:getPlayerNickSexByUserID(cardPreGangOK.nUserID))
+        self:playOperationEffectByName("PreGang", self:getPlayerNickSexByUserID(cardPreGangOK.nUserID))
 
         if cardPreGangOK.dwFlags == MJGameDef.MJ_GANG_PN then
             local pgchWait = 5
@@ -2621,19 +2503,19 @@ end
 
 function MJGameController:onMJOperationFailed(response)
     local switchAction = {
-        [MJGameDef.MJ_WAITING_THROW_CARDS]  = function(response) self:tipMessageByGBStr("³öÅÆÊ§°Ü!") end,
-        [MJGameDef.MJ_WAITING_CATCH_CARDS]  = function(response) self:tipMessageByGBStr("×¥ÅÆÊ§°Ü!") end,
-        [MJGameDef.MJ_WAITING_PENG_CARDS]   = function(response) self:tipMessageByGBStr("ÅöÅÆÊ§°Ü!") end,
-        [MJGameDef.MJ_WAITING_MNGANG_CARDS] = function(response) self:tipMessageByGBStr("Ã÷¸ÜÊ§°Ü!") end,
-        [MJGameDef.MJ_WAITING_ANGANG_CARDS] = function(response) self:tipMessageByGBStr("°µ¸ÜÊ§°Ü!") end,
-        [MJGameDef.MJ_WAITING_PNGANG_CARDS] = function(response) self:tipMessageByGBStr("Åö¸ÜÊ§°Ü!") end,
-        [MJGameDef.MJ_WAITING_CHI_CARDS]    = function(response) self:tipMessageByGBStr("³ÔÅÆÊ§°Ü!") end,
-        [MJGameDef.MJ_WAITING_HU_CARDS]     = function(response) self:tipMessageByGBStr("ºúÅÆÊ§°Ü!") end,
-        [MJGameDef.MJ_WAITING_HUA_CARDS]    = function(response) self:tipMessageByGBStr("²¹»¨Ê§°Ü!") end,
+        [MJGameDef.MJ_WAITING_THROW_CARDS]  = function(response) self:tipMessageByGBStr("throw card failed!") end,
+        [MJGameDef.MJ_WAITING_CATCH_CARDS]  = function(response) self:tipMessageByGBStr("catch card failed!") end,
+        [MJGameDef.MJ_WAITING_PENG_CARDS]   = function(response) self:tipMessageByGBStr("peng card failed!") end,
+        [MJGameDef.MJ_WAITING_MNGANG_CARDS] = function(response) self:tipMessageByGBStr("mngang card failed!") end,
+        [MJGameDef.MJ_WAITING_ANGANG_CARDS] = function(response) self:tipMessageByGBStr("angang card failed!") end,
+        [MJGameDef.MJ_WAITING_PNGANG_CARDS] = function(response) self:tipMessageByGBStr("penggang card failed!") end,
+        [MJGameDef.MJ_WAITING_CHI_CARDS]    = function(response) self:tipMessageByGBStr("chi card failed!") end,
+        [MJGameDef.MJ_WAITING_HU_CARDS]     = function(response) self:tipMessageByGBStr("hu card failed!") end,
+        [MJGameDef.MJ_WAITING_HUA_CARDS]    = function(response) self:tipMessageByGBStr("hua card failed!") end,
     }
     if switchAction[response] then
         if 0 < DEBUG then
-            --switchAction[response](response)
+            switchAction[response](response)
         end
     end
 
@@ -2678,82 +2560,22 @@ end
 
 function MJGameController:playCardEffectByID(cardID, nickSex)
     local sexFolderName = "MaleSound/"
-    local soundName = tostring(MJCalculator:MJ_CalcIndexByID(cardID, 0))
-    
     if 1 == nickSex then
         sexFolderName = "FemaleSound/"
     end
-    if not self:isStandLanguage() then
-        sexFolderName = "MaleSound_hn/"
-        if 1 == nickSex then
-            sexFolderName = "FemaleSound_hn/"
-        end
-        local ret = math.random(1,2)
-        if ret == 2 then
-            local index = MJCalculator:MJ_CalcIndexByID(cardID, 0)
-            if 1 == nickSex then               
-                if index == 1 or index == 2 or index == 5
-                    or index == 12 or index == 17 or index == 25 or index == 27 then
-                    soundName = soundName .. "_" .. soundName
-                end
-            else
-                if index == 1 or index == 3 or index == 6 or index == 9
-                    or index == 14 or index == 17 or index == 25 or index == 27 then
-                    soundName = soundName .. "_" .. soundName
-                end
-            end	
-            print(soundName)
-        end
-    end   
+
+    local soundName = tostring(MJCalculator:MJ_CalcIndexByID(cardID, 0))
+
     self:playEffect(sexFolderName .. "cardSound_" ..soundName .. ".ogg")
 end
 
-function MJGameController:playOperationEffectByName(name, nickSex)   
-
+function MJGameController:playOperationEffectByName(name, nickSex)
     local sexFolderName = "MaleSound/"
     if 1 == nickSex then
         sexFolderName = "FemaleSound/"
     end
-    if not self:isStandLanguage() then	
-        sexFolderName = "MaleSound_hn/"
-        if 1 == nickSex then
-            sexFolderName = "FemaleSound_hn/"
-        end
-    end
 
     self:playEffect(sexFolderName .. "operation" ..name .. ".ogg")
-end
-
-local constStrings1 = cc.load('json').loader.loadFile('../mMyGame/ChatStrings.json')
-local constStrings2 = cc.load('json').loader.loadFile('../mMyGame/ChatStrings-female.json')
-function MJGameController:playChatEffectByName(name, nickSex) 
---    if self:isStandLanguage() then return end
-    
-    local str = string.sub(name,1,-2)
---    local strPath
-
-    local constStrings = constStrings1
-    if nickSex == 1 then
-        constStrings = constStrings2               
-    else
-        constStrings = constStrings1
-    end    
-    
-	local sexFolderName = "MaleSound_hn/"
-	if 1 == nickSex then
-		sexFolderName = "FemaleSound_hn/"
-	end
-	
-    for i=1,8 do
-        local a = math.floor((i+1)/2)
-		local b = (i+1)%2+1
-		
-        if constStrings["QUICK_CHAT_WORDS_".. tostring(a) .. tostring(b) ] == str then
-            self:playEffect(sexFolderName .. "talk" ..i .. ".ogg")
-            break
-        end
-    end
-    
 end
 
 function MJGameController:playDealCardEffect()
@@ -2764,22 +2586,6 @@ function MJGameController:playWinEffectByName(name, nickSex)
     local sexFolderName = "MaleSound/"
     if 1 == nickSex then
         sexFolderName = "FemaleSound/"
-    end
-	
-	if not self:isStandLanguage() then
-	    sexFolderName = "MaleSound_hn/"
-        if 1 == nickSex then
-            sexFolderName = "FemaleSound_hn/"
-        end
-		if string.find(name,"hu") then
-			local ret = math.random(1,3)
-			name = name .. tostring(ret)
-		end
-	
-        sexFolderName = "MaleSound_hn/"
-        if 1 == nickSex then
-            sexFolderName = "FemaleSound_hn/"
-        end
     end
 
     self:playEffect(sexFolderName .. "winSound_" ..name .. ".ogg")

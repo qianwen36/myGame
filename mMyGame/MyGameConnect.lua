@@ -1,12 +1,12 @@
 
-local MJGameConnect = import("src.app.Game.mMJGame.MJGameConnect")
+local MJGameConnect = import("..mMJGame.MJGameConnect")
 local MyGameConnect = class("MyGameConnect", MJGameConnect)
 
 local treepack                              = cc.load("treepack")
 
-local MJGameReq                             = import("src.app.Game.mMJGame.MJGameReq")
-local MyGameReq                             = import("src.app.Game.mMyGame.MyGameReq")
-local MyGameDef                             = import("src.app.Game.mMyGame.MyGameDef")
+local MJGameReq                             = import("..mMJGame.MJGameReq")
+local MyGameReq                             = import(".MyGameReq")
+local MyGameDef                             = import(".MyGameDef")
 
 function MyGameConnect:reqDouble(bFang)
     local playerInfoManager = self._gameController:getPlayerInfoManager()

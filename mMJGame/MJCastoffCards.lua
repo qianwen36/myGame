@@ -1,7 +1,7 @@
 
 local MJCastoffCards = class("MJCastoffCards")
 
-local MJCardCastoff             = import("src.app.Game.mMJGame.MJCardCastoff")
+local MJCardCastoff             = import(".MJCardCastoff")
 
 function MJCastoffCards:create(castoffCardsPanel, drawIndex, gameController)
     return MJCastoffCards.new(castoffCardsPanel, drawIndex, gameController)

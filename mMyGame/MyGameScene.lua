@@ -60,7 +60,7 @@ function MyGameScene:setPGCCards()
     self._MJPGCCardsManager = MJPGCCardsManager:create(PGCCards, self._gameController)
 end
 
-function MJGameScene:setPGCH()
+function MyGameScene:setPGCH()
     if not self._gameNode then return end
 
     local PGCHPanel = self._gameNode:getChildByName("Panel_PGCH")

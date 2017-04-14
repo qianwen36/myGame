@@ -1,7 +1,7 @@
 
 local MJGameResultPanel = class("MJGameResultPanel", ccui.Layout)
 
-local MJGameDef                 = import("src.app.Game.mMJGame.MJGameDef")
+local MJGameDef                 = import(".MJGameDef")
 
 function MJGameResultPanel:ctor(gameWin, gameController)
     if not gameWin then printError("gameWin is nil!!!") return end

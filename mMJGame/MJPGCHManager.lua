@@ -1,9 +1,9 @@
 
 local MJPGCHManager = class("MJPGCHManager")
 
-local MJGameDef                 = import("src.app.Game.mMJGame.MJGameDef")
+local MJGameDef                 = import(".MJGameDef")
 
-local MJCalculator              = import("src.app.Game.mMJGame.MJCalculator")
+local MJCalculator              = import(".MJCalculator")
 
 local MJ_PGCH_FLAG              = {MJGameDef.MJ_PENG, MJGameDef.MJ_GANG, MJGameDef.MJ_CHI, MJGameDef.MJ_HU, MJGameDef.MJ_GUO}
 local MJ_PGCH_SORT              = {MJGameDef.MJ_PGCH_HU, MJGameDef.MJ_PGCH_GANG, MJGameDef.MJ_PGCH_PENG, MJGameDef.MJ_PGCH_CHI, MJGameDef.MJ_PGCH_GUO}
@@ -36,7 +36,6 @@ function MJPGCHManager:ctor(PGCHPanel, gameController)
 
     self._qiangGangInfo         = {}
 
-    self._canSpecialGangIndex   = nil
     self:init()
 end
 
@@ -65,8 +64,6 @@ function MJPGCHManager:resetMJPGCHManager()
 
     self._waitingOperation      = 0
     self._qiangGangInfo         = {}
-    
-    self._canSpecialGangIndex   = nil
 end
 
 function MJPGCHManager:setPGCHBtns()
@@ -77,6 +74,7 @@ function MJPGCHManager:setPGCHBtns()
         local buttonPeng = self._PGCHPanel:getChildByName("Button_peng")
         if buttonPeng then
             buttonPeng:addClickEventListener(onPeng)
+
             self._PGCHBtns[MJGameDef.MJ_PGCH_PENG] = buttonPeng
             self._btnpos[MJGameDef.MJ_PGCH_PENG] = cc.p(buttonPeng:getPositionX(), buttonPeng:getPositionY())
         end
@@ -84,10 +82,10 @@ function MJPGCHManager:setPGCHBtns()
         local function onGang()
             self:onGang()
         end
-        local buttonGang = self._PGCHPanel:getChildByName("Button_bu")
+        local buttonGang = self._PGCHPanel:getChildByName("Button_gang")
         if buttonGang then
             buttonGang:addClickEventListener(onGang)
-            
+
             self._PGCHBtns[MJGameDef.MJ_PGCH_GANG] = buttonGang
             self._btnpos[MJGameDef.MJ_PGCH_GANG] = cc.p(buttonGang:getPositionX(), buttonGang:getPositionY())
         end
@@ -151,23 +149,11 @@ function MJPGCHManager:getCurrentFlags()
     return self._currentFlags
 end
 
-function MJPGCHManager:setCanSpecialCardIndex(nIndexSpecialGang)
-    self._canSpecialGangIndex = nIndexSpecialGang
-end
-
-function MJPGCHManager:getCanSpecialCardIndex()
-    return self._canSpecialGangIndex
-end
-
 function MJPGCHManager:setCardCaught(cardCaught)
     self._cardCaught = cardCaught
     if cardCaught then
         if cardCaught.dwFlags then
             self:setCurrentFlags(cardCaught.dwFlags)
-        end
-        
-        if cardCaught.nIndexSpecialGang then
-            self:setCanSpecialCardIndex(cardCaught.nIndexSpecialGang)
         end
     end
 end
@@ -252,7 +238,6 @@ function MJPGCHManager:showPGCHBtns()
         end
     end
 
-
     self:adjustPGCHBtnPos()
 end
 
@@ -270,7 +255,7 @@ function MJPGCHManager:adjustPGCHBtnPos()
 end
 
 function MJPGCHManager:hidePGCHBtns()
-    for i = 1, 6 do
+    for i = 1, 5 do
         if self._PGCHBtns[i] then
             self._PGCHBtns[i]:setVisible(false)
         end

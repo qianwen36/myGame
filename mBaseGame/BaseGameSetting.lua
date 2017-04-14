@@ -269,6 +269,8 @@ function BaseGameSetting:onEffectToggleClk()
     self:saveSetting()
 end
 
+local FileUtils = cc.FileUtils:getInstance()
+
 function BaseGameSetting:saveSetting()
     self._settingData.musicVolume = self._initMusicVolume * 100
     if not self._bMusicOn then
@@ -280,11 +282,12 @@ function BaseGameSetting:saveSetting()
     end
     self._settingData.isSoundForbbiden = self._bSoundForbbiden
     self._settingData.singleClk = self._bSelCardBySingleClk
-    my.saveCache("SettingsData.xml", self._settingData)
+
+    FileUtils:writeToFile(self._settingData, FileUtils:getGameWritablePath().."SettingsData.xml")
 end
 
 function BaseGameSetting:getSetting()
-    return my.readCache("SettingsData.xml")
+    return FileUtils:getValueMapFromFile(FileUtils:getGameWritablePath().."SettingsData.xml")
 end
 
 return BaseGameSetting

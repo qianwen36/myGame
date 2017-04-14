@@ -1,5 +1,5 @@
 
-local MJCastoffCardsManager = import("src.app.Game.MJGame.MJCastoffCardsManager")
+local MJCastoffCardsManager = import("..MJGame.MJCastoffCardsManager")
 local MyCastoffCardsManager = class("MJCastoffCardsManager", MJCastoffCardsManager)
 
 function MyCastoffCardsManager:create(MJCastoffCards, gameController)

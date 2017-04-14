@@ -1,9 +1,9 @@
 
-local MJPGCHManager = import("src.app.Game.mMJGame.MJPGCHManager")
+local MJPGCHManager = import("..mMJGame.MJPGCHManager")
 local MyPGCHManager = class("MyPGCHManager", MJPGCHManager)
 
-local MJGameDef                 = import("src.app.Game.mMJGame.MJGameDef")
-local MyGameDef                 = import("src.app.Game.mMyGame.MyGameDef")
+local MJGameDef                 = import("..mMJGame.MJGameDef")
+local MyGameDef                 = import(".MyGameDef")
 
 local MY_PGCH_FLAG              = {MJGameDef.MJ_PENG, MJGameDef.MJ_GANG, MJGameDef.MJ_CHI, MJGameDef.MJ_HU, MJGameDef.MJ_GUO}
 local MY_PGCH_SORT              = {MJGameDef.MJ_PGCH_GANG, MJGameDef.MJ_PGCH_PENG, MJGameDef.MJ_PGCH_CHI, MJGameDef.MJ_PGCH_GUO}

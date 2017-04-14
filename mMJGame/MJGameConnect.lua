@@ -1,20 +1,20 @@
 
-local BaseGameConnect = import("src.app.Game.mBaseGame.BaseGameConnect")
+local BaseGameConnect = import("..mBaseGame.BaseGameConnect")
 local MJGameConnect = class("MJGameConnect", BaseGameConnect)
 
 local treepack                              = cc.load("treepack")
 
-local MJGameReq                             = import("src.app.Game.mMJGame.MJGameReq")
-local MJGameDef                             = import("src.app.Game.mMJGame.MJGameDef")
+local MJGameReq                             = import(".MJGameReq")
+local MJGameDef                             = import(".MJGameDef")
 
 function MJGameConnect:sendMsgToServer(msgID)
     local playerInfoManager = self._gameController:getPlayerInfoManager()
-    local utilsInfoManager  = self._gameController:getUtilsInfoManager()
-    if not playerInfoManager or not utilsInfoManager then return end
+    local uitleInfoManager  = self._gameController:getUtilsInfoManager()
+    if not playerInfoManager or not uitleInfoManager then return end
 
     local GR_SENDMSG_TO_SERVER = MJGameReq["GAME_MSG"]
     local data              = {
-        nRoomID             = utilsInfoManager:getRoomID(),
+        nRoomID             = uitleInfoManager:getRoomID(),
         nUserID             = playerInfoManager:getSelfUserID(),
         nMsgID              = msgID
     }
@@ -26,24 +26,24 @@ end
 
 function MJGameConnect:reqThrowCard(id)
     local playerInfoManager = self._gameController:getPlayerInfoManager()
-    local utilsInfoManager  = self._gameController:getUtilsInfoManager()
-    if not playerInfoManager or not utilsInfoManager then return end
+    local uitleInfoManager  = self._gameController:getUtilsInfoManager()
+    if not playerInfoManager or not uitleInfoManager then return end
 
     local waitingResponse = self._gameController:getResponse()
     if waitingResponse == self._gameController:getResWaitingNothing() then
         local GR_THROW_CARDS = MJGameReq["THROW_CARDS"]
         local data          = {
             nUserID         = playerInfoManager:getSelfUserID(),
-            nRoomID         = utilsInfoManager:getRoomID(),
+            nRoomID         = uitleInfoManager:getRoomID(),
             nTableNO        = playerInfoManager:getSelfTableNO(),
             nChairNO        = playerInfoManager:getSelfChairNO(),
             nSendTable      = playerInfoManager:getSelfTableNO(),
             nSendChair      = playerInfoManager:getSelfChairNO(),
             nSendUser       = playerInfoManager:getSelfUserID(),
-            szHardID        = utilsInfoManager:getHardID(),
+            szHardID        = uitleInfoManager:getHardID(),
             dwCardsType     = 1,
             nCardsCount     = 1,
-            nCardIDs        = {id,-1}
+            nCardIDs        = {id}
         }
         local pData = treepack.alignpack(data, GR_THROW_CARDS)
 
@@ -57,15 +57,15 @@ end
 
 function MJGameConnect:reqCatchCard()
     local playerInfoManager = self._gameController:getPlayerInfoManager()
-    local utilsInfoManager  = self._gameController:getUtilsInfoManager()
-    if not playerInfoManager or not utilsInfoManager then return end
+    local uitleInfoManager  = self._gameController:getUtilsInfoManager()
+    if not playerInfoManager or not uitleInfoManager then return end
 
     local waitingResponse = self._gameController:getResponse()
     if waitingResponse == self._gameController:getResWaitingNothing() then
         local GR_CATCH_CARD = MJGameReq["CATCH_CARD"]
         local data          = {
             nUserID         = playerInfoManager:getSelfUserID(),
-            nRoomID         = utilsInfoManager:getRoomID(),
+            nRoomID         = uitleInfoManager:getRoomID(),
             nTableNO        = playerInfoManager:getSelfTableNO(),
             nChairNO        = playerInfoManager:getSelfChairNO(),
             nSendTable      = playerInfoManager:getSelfTableNO(),
@@ -84,15 +84,15 @@ end
 
 function MJGameConnect:reqHuaCard(id)
     local playerInfoManager = self._gameController:getPlayerInfoManager()
-    local utilsInfoManager  = self._gameController:getUtilsInfoManager()
-    if not playerInfoManager or not utilsInfoManager then return end
+    local uitleInfoManager  = self._gameController:getUtilsInfoManager()
+    if not playerInfoManager or not uitleInfoManager then return end
 
     local waitingResponse = self._gameController:getResponse()
     if waitingResponse == self._gameController:getResWaitingNothing() then
         local GR_HUA_CARD = MJGameReq["HUA_CARD"]
         local data          = {
             nUserID         = playerInfoManager:getSelfUserID(),
-            nRoomID         = utilsInfoManager:getRoomID(),
+            nRoomID         = uitleInfoManager:getRoomID(),
             nTableNO        = playerInfoManager:getSelfTableNO(),
             nChairNO        = playerInfoManager:getSelfChairNO(),
             nCardID         = id
@@ -109,15 +109,15 @@ end
 
 function MJGameConnect:reqGuoCard()
     local playerInfoManager = self._gameController:getPlayerInfoManager()
-    local utilsInfoManager  = self._gameController:getUtilsInfoManager()
-    if not playerInfoManager or not utilsInfoManager then return end
+    local uitleInfoManager  = self._gameController:getUtilsInfoManager()
+    if not playerInfoManager or not uitleInfoManager then return end
 
     local waitingResponse = self._gameController:getResponse()
     if waitingResponse == self._gameController:getResWaitingNothing() then
         local GR_GUO_CARD = MJGameReq["GUO_CARD"]
         local data          = {
             nUserID         = playerInfoManager:getSelfUserID(),
-            nRoomID         = utilsInfoManager:getRoomID(),
+            nRoomID         = uitleInfoManager:getRoomID(),
             nTableNO        = playerInfoManager:getSelfTableNO(),
             nChairNO        = playerInfoManager:getSelfChairNO()
         }
@@ -132,15 +132,15 @@ end
 
 function MJGameConnect:reqPrePengCard(cardChair, cardID, baseIDs)
     local playerInfoManager = self._gameController:getPlayerInfoManager()
-    local utilsInfoManager  = self._gameController:getUtilsInfoManager()
-    if not playerInfoManager or not utilsInfoManager then return end
+    local uitleInfoManager  = self._gameController:getUtilsInfoManager()
+    if not playerInfoManager or not uitleInfoManager then return end
 
     local waitingResponse = self._gameController:getResponse()
     if waitingResponse == self._gameController:getResWaitingNothing() then
         local GR_PREPENG_CARD = MJGameReq["PGC_CARD"]
         local data          = {
             nUserID         = playerInfoManager:getSelfUserID(),
-            nRoomID         = utilsInfoManager:getRoomID(),
+            nRoomID         = uitleInfoManager:getRoomID(),
             nTableNO        = playerInfoManager:getSelfTableNO(),
             nChairNO        = playerInfoManager:getSelfChairNO(),
             nCardChair      = cardChair,
@@ -158,15 +158,15 @@ end
 
 function MJGameConnect:reqPengCard(cardChair, cardID, baseIDs)
     local playerInfoManager = self._gameController:getPlayerInfoManager()
-    local utilsInfoManager  = self._gameController:getUtilsInfoManager()
-    if not playerInfoManager or not utilsInfoManager then return end
+    local uitleInfoManager  = self._gameController:getUtilsInfoManager()
+    if not playerInfoManager or not uitleInfoManager then return end
 
     local waitingResponse = self._gameController:getResponse()
     if waitingResponse == self._gameController:getResWaitingNothing() then
         local GR_PENG_CARD = MJGameReq["PGC_CARD"]
         local data          = {
             nUserID         = playerInfoManager:getSelfUserID(),
-            nRoomID         = utilsInfoManager:getRoomID(),
+            nRoomID         = uitleInfoManager:getRoomID(),
             nTableNO        = playerInfoManager:getSelfTableNO(),
             nChairNO        = playerInfoManager:getSelfChairNO(),
             nCardChair      = cardChair,
@@ -185,15 +185,15 @@ end
 
 function MJGameConnect:reqPreGangCard(cardChair, cardID, baseIDs, gangFlags)
     local playerInfoManager = self._gameController:getPlayerInfoManager()
-    local utilsInfoManager  = self._gameController:getUtilsInfoManager()
-    if not playerInfoManager or not utilsInfoManager then return end
+    local uitleInfoManager  = self._gameController:getUtilsInfoManager()
+    if not playerInfoManager or not uitleInfoManager then return end
 
     local waitingResponse = self._gameController:getResponse()
     if waitingResponse == self._gameController:getResWaitingNothing() then
         local GR_PREGANG_CARD = MJGameReq["PGC_CARD"]
         local data          = {
             nUserID         = playerInfoManager:getSelfUserID(),
-            nRoomID         = utilsInfoManager:getRoomID(),
+            nRoomID         = uitleInfoManager:getRoomID(),
             nTableNO        = playerInfoManager:getSelfTableNO(),
             nChairNO        = playerInfoManager:getSelfChairNO(),
             nCardChair      = cardChair,
@@ -212,15 +212,15 @@ end
 
 function MJGameConnect:reqMnGangCard(cardChair, cardID, baseIDs)
     local playerInfoManager = self._gameController:getPlayerInfoManager()
-    local utilsInfoManager  = self._gameController:getUtilsInfoManager()
-    if not playerInfoManager or not utilsInfoManager then return end
+    local uitleInfoManager  = self._gameController:getUtilsInfoManager()
+    if not playerInfoManager or not uitleInfoManager then return end
 
     local waitingResponse = self._gameController:getResponse()
     if waitingResponse == self._gameController:getResWaitingNothing() then
         local GR_MNGANG_CARD = MJGameReq["PGC_CARD"]
         local data          = {
             nUserID         = playerInfoManager:getSelfUserID(),
-            nRoomID         = utilsInfoManager:getRoomID(),
+            nRoomID         = uitleInfoManager:getRoomID(),
             nTableNO        = playerInfoManager:getSelfTableNO(),
             nChairNO        = playerInfoManager:getSelfChairNO(),
             nCardChair      = cardChair,
@@ -239,15 +239,15 @@ end
 
 function MJGameConnect:reqAnGangCard(cardChair, cardID, baseIDs)
     local playerInfoManager = self._gameController:getPlayerInfoManager()
-    local utilsInfoManager  = self._gameController:getUtilsInfoManager()
-    if not playerInfoManager or not utilsInfoManager then return end
+    local uitleInfoManager  = self._gameController:getUtilsInfoManager()
+    if not playerInfoManager or not uitleInfoManager then return end
 
     local waitingResponse = self._gameController:getResponse()
     if waitingResponse == self._gameController:getResWaitingNothing() then
         local GR_ANGANG_CARD = MJGameReq["PGC_CARD"]
         local data          = {
             nUserID         = playerInfoManager:getSelfUserID(),
-            nRoomID         = utilsInfoManager:getRoomID(),
+            nRoomID         = uitleInfoManager:getRoomID(),
             nTableNO        = playerInfoManager:getSelfTableNO(),
             nChairNO        = playerInfoManager:getSelfChairNO(),
             nCardChair      = cardChair,
@@ -266,15 +266,15 @@ end
 
 function MJGameConnect:reqPnGangCard(cardChair, cardID, baseIDs)
     local playerInfoManager = self._gameController:getPlayerInfoManager()
-    local utilsInfoManager  = self._gameController:getUtilsInfoManager()
-    if not playerInfoManager or not utilsInfoManager then return end
+    local uitleInfoManager  = self._gameController:getUtilsInfoManager()
+    if not playerInfoManager or not uitleInfoManager then return end
 
     local waitingResponse = self._gameController:getResponse()
     if waitingResponse == self._gameController:getResWaitingNothing() then
         local GR_PNGANG_CARD = MJGameReq["PGC_CARD"]
         local data          = {
             nUserID         = playerInfoManager:getSelfUserID(),
-            nRoomID         = utilsInfoManager:getRoomID(),
+            nRoomID         = uitleInfoManager:getRoomID(),
             nTableNO        = playerInfoManager:getSelfTableNO(),
             nChairNO        = playerInfoManager:getSelfChairNO(),
             nCardChair      = cardChair,
@@ -293,15 +293,15 @@ end
 
 function MJGameConnect:reqPreChiCard(cardChair, cardID, baseIDs)
     local playerInfoManager = self._gameController:getPlayerInfoManager()
-    local utilsInfoManager  = self._gameController:getUtilsInfoManager()
-    if not playerInfoManager or not utilsInfoManager then return end
+    local uitleInfoManager  = self._gameController:getUtilsInfoManager()
+    if not playerInfoManager or not uitleInfoManager then return end
 
     local waitingResponse = self._gameController:getResponse()
     if waitingResponse == self._gameController:getResWaitingNothing() then
         local GR_PRECHI_CARD = MJGameReq["PGC_CARD"]
         local data          = {
             nUserID         = playerInfoManager:getSelfUserID(),
-            nRoomID         = utilsInfoManager:getRoomID(),
+            nRoomID         = uitleInfoManager:getRoomID(),
             nTableNO        = playerInfoManager:getSelfTableNO(),
             nChairNO        = playerInfoManager:getSelfChairNO(),
             nCardChair      = cardChair,
@@ -319,15 +319,15 @@ end
 
 function MJGameConnect:reqChiCard(cardChair, cardID, baseIDs)
     local playerInfoManager = self._gameController:getPlayerInfoManager()
-    local utilsInfoManager  = self._gameController:getUtilsInfoManager()
-    if not playerInfoManager or not utilsInfoManager then return end
+    local uitleInfoManager  = self._gameController:getUtilsInfoManager()
+    if not playerInfoManager or not uitleInfoManager then return end
 
     local waitingResponse = self._gameController:getResponse()
     if waitingResponse == self._gameController:getResWaitingNothing() then
         local GR_CHI_CARD = MJGameReq["PGC_CARD"]
         local data          = {
             nUserID         = playerInfoManager:getSelfUserID(),
-            nRoomID         = utilsInfoManager:getRoomID(),
+            nRoomID         = uitleInfoManager:getRoomID(),
             nTableNO        = playerInfoManager:getSelfTableNO(),
             nChairNO        = playerInfoManager:getSelfChairNO(),
             nCardChair      = cardChair,
@@ -346,15 +346,15 @@ end
 
 function MJGameConnect:reqHuCard(cardChair, cardID, huFlags, subFlags)
     local playerInfoManager = self._gameController:getPlayerInfoManager()
-    local utilsInfoManager  = self._gameController:getUtilsInfoManager()
-    if not playerInfoManager or not utilsInfoManager then return end
+    local uitleInfoManager  = self._gameController:getUtilsInfoManager()
+    if not playerInfoManager or not uitleInfoManager then return end
 
     local waitingResponse = self._gameController:getResponse()
     if waitingResponse == self._gameController:getResWaitingNothing() then
         local GR_HU_CARD = MJGameReq["HU_CARD"]
         local data          = {
             nUserID         = playerInfoManager:getSelfUserID(),
-            nRoomID         = utilsInfoManager:getRoomID(),
+            nRoomID         = uitleInfoManager:getRoomID(),
             nTableNO        = playerInfoManager:getSelfTableNO(),
             nChairNO        = playerInfoManager:getSelfChairNO(),
             nCardChair      = cardChair,

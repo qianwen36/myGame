@@ -1,5 +1,5 @@
 
-local BaseGameClock = import("src.app.Game.mBaseGame.BaseGameClock")
+local BaseGameClock = import("..mBaseGame.BaseGameClock")
 local MJGameClock = class("MJGameClock", BaseGameClock)
 
 function MJGameClock:ctor(clockPanel, gameController)

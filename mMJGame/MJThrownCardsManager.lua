@@ -1,7 +1,7 @@
 
 local MJThrownCardsManager = class("MJThrownCardsManager")
 
-local MJCardThrown              = import("src.app.Game.mMJGame.MJCardThrown")
+local MJCardThrown              = import(".MJCardThrown")
 
 function MJThrownCardsManager:create(thrownCardsPanel, gameController)
     return MJThrownCardsManager.new(thrownCardsPanel, gameController)

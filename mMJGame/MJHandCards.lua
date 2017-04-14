@@ -1,8 +1,8 @@
 
 local MJHandCards = class("MJHandCards")
 
-local MJCardHand                = import("src.app.Game.mMJGame.MJCardHand")
-local MJCalculator              = import("src.app.Game.mMJGame.MJCalculator")
+local MJCardHand                = import(".MJCardHand")
+local MJCalculator              = import(".MJCalculator")
 
 function MJHandCards:create(handCardsPanel, drawIndex, gameController)
     return MJHandCards.new(handCardsPanel, drawIndex, gameController)
@@ -17,7 +17,7 @@ function MJHandCards:ctor(handCardsPanel, drawIndex, gameController)
     self._cards                 = {}
     self._cardsCount            = 0
     self._bNeedThrow            = false
-    self._MJOffsetY             = 50
+
     self:init()
 end
 
@@ -65,7 +65,7 @@ end
 
 function MJHandCards:onDealCard(dealCircles, bLastCircle)
     if not self._cards then return end
-       
+
     local dealCount = self._gameController:getOnceDealCount()
     if bLastCircle then
         dealCount = 1
@@ -76,7 +76,6 @@ function MJHandCards:onDealCard(dealCircles, bLastCircle)
         local card = self._cards[self._gameController:getChairCardsCount() - dealIndex]
         if card then
             card:dealCard(false)
-            card:setEnableTouch(false)--发牌的时候不允许玩家点牌，会造成上下错乱
         end
     end
 end
@@ -87,7 +86,6 @@ function MJHandCards:onDealLastCard()
     local card = self._cards[1]
     if card then
         card:dealCard(true)
-        card:setEnableTouch(false)--发牌的时候不允许玩家点牌，会造成上下错乱
     end
 end
 
@@ -95,11 +93,6 @@ function MJHandCards:onDealCardFinished(lastDeal)
     if lastDeal then
         self:setNeedThrow(true)
         self._gameController:onDealCardFinished()
-    end
-    
-    --发完牌之后，手牌回复可以点击
-    if self:isMySelf() then
-        self:setEnableTouch(true)
     end
 end
 
@@ -239,7 +232,6 @@ end
 function MJHandCards:onCardCaught(id)
     if not self:canThrow() then
         self:catchCard(id)
-        self:maskForCard()
     end
 end
 
@@ -250,15 +242,12 @@ function MJHandCards:catchCard(id)
     self:resetCardsPos()
     if self._cards[1] then
         self._cards[1]:catchCard(id)
-        --抓牌的时候最右边的那张牌不可点击
-        self._cards[1]:setEnableTouch(false)
     end
 end
 
 function MJHandCards:onCatchCardFinished(id)
     if self:isMySelf() then
         if self._cards[1] then
-            --抓完牌的时候最右边的那张牌恢复可点击
             self._cards[1]:setEnableTouch(true)
         end
     end
@@ -299,8 +288,8 @@ function MJHandCards:onCardMnGang(baseIDs, cardGot)
     self:setNeedThrow(false)
     self:sortHandCards()
     self:updateHandCards()
-    self:setEnableTouch(true)    
     self:catchCard(cardGot)
+    self:setEnableTouch(true)
 end
 
 function MJHandCards:onCardAnGang(baseIDs, cardID, cardGot)
@@ -309,8 +298,8 @@ function MJHandCards:onCardAnGang(baseIDs, cardID, cardGot)
     self:setNeedThrow(false)
     self:sortHandCards()
     self:updateHandCards()
-    self:setEnableTouch(true)
     self:catchCard(cardGot)
+    self:setEnableTouch(true)
 end
 
 function MJHandCards:onCardPnGang(cardID, cardGot)
@@ -318,8 +307,8 @@ function MJHandCards:onCardPnGang(cardID, cardGot)
     self:setNeedThrow(false)
     self:sortHandCards()
     self:updateHandCards()
-    self:setEnableTouch(true)    
     self:catchCard(cardGot)
+    self:setEnableTouch(true)
 end
 
 function MJHandCards:isCardsFaceShow()
@@ -432,7 +421,7 @@ end
 function MJHandCards:resetCardsPos()
     for i = 1, self._gameController:getChairCardsCount() do
         if self._cards[i] then
-            if not self._cards[i]:isRunning() then              
+            if not self._cards[i]:isRunning() then
                 self._cards[i]:resetCardPos()
             end
         end
@@ -442,10 +431,7 @@ end
 function MJHandCards:resetCardsState()
     for i = 1, self._gameController:getChairCardsCount() do
         if self._cards[i] then
-            if not self._cards[i]:isRunning() then
-                self._cards[i]:initSelState()
-            end
-            --self._cards[i]:initSelState()
+            self._cards[i]:initSelState()
         end
     end
 end
@@ -453,7 +439,7 @@ end
 function MJHandCards:containsTouchLocation(x, y)
     local position = cc.p(self._handCardsPanel:getPosition())
     local s = self._handCardsPanel:getContentSize()
-    local touchRect = cc.rect(position.x , position.y , s.width, s.height + self._MJOffsetY )
+    local touchRect = cc.rect(position.x - s.width / 2, position.y - s.height / 2, s.width, s.height)
     local b = cc.rectContainsPoint(touchRect, cc.p(x, y))
     return b
 end

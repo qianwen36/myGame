@@ -1,19 +1,19 @@
 
 local MJPGCCardsItem = class("MJPGCCardsItem", ccui.Layout)
 
-local MJGameDef                 = import("src.app.Game.mMJGame.MJGameDef")
+local MJGameDef                 = import(".MJGameDef")
 
-local MJCalculator              = import("src.app.Game.mMJGame.MJCalculator")
-local MJCardPGC                 = import("src.app.Game.mMJGame.MJCardPGC")
+local MJCalculator              = import(".MJCalculator")
+local MJCardPGC                 = import(".MJCardPGC")
 
 local MJPGC_Table               = {{2, 1, 2, 3}, {3, 2, 1, 2}, {2, 3, 2, 1}, {1, 2, 3, 2}}
 local MJPGC_CARD_Table          = {{1, 4, 1, 2}, {3, 2, 3, 2}, {3, 4, 3, 2}, {3, 4, 3, 4}}
 
-function MJPGCCardsItem:ctor(MJPGCCards, MJPGCItem, sourceIndex, baseIDs, cardID, type)
+function MJPGCCardsItem:ctor(MJPGCCards, sourceIndex, baseIDs, cardID, type)
     if not MJPGCCards then printError("MJPGCCards is nil!!!") return end
     self._MJPGCCards            = MJPGCCards
 
-    self._MJPGCItem             = MJPGCItem
+    self._MJPGCItem             = nil
     self._MJPGCCardsList        = {}
 
     self._sourceIndex           = sourceIndex
@@ -36,15 +36,15 @@ function MJPGCCardsItem:init()
 end
 
 function MJPGCCardsItem:initPGCCartItem()
---[[    local drawIndex = self._MJPGCCards:getDrawIndex()
+    local drawIndex = self._MJPGCCards:getDrawIndex()
     local sourceIndex = MJPGC_Table[drawIndex][self._sourceIndex]
     local csbPath = "res/GameCocosStudio/game/PGCNode_" .. drawIndex .. sourceIndex .. ".csb"
     self._MJPGCItem = cc.CSLoader:createNode(csbPath)
     if self._MJPGCItem then
         self:addChild(self._MJPGCItem)
-    end]]
+    end
 end
---[[
+
 function MJPGCCardsItem:setPGCCards()
     if self._MJPGCItem then
         local card = self._MJPGCItem:getChildByName("1")
@@ -59,52 +59,6 @@ function MJPGCCardsItem:setPGCCards()
                 self._MJPGCCardsList[i] = MJCardPGC:create(card, self._MJPGCCards:getDrawIndex(), self)
             end
         end
-    end
-end
-]]
-
-function MJPGCCardsItem:setPGCCards()
-    if self._MJPGCItem then
-
-        for i = 1, 4 do
-            local card = self._MJPGCItem:getChildByName(tostring(i))
-            if card then
-                self._MJPGCCardsList[i] = MJCardPGC:create(card, self._MJPGCCards:getDrawIndex(), self)
-            end
-        end
-
-        local arrordown = self._MJPGCItem:getChildByName("ico_pgch_down")
-        if arrordown then
-            arrordown:setVisible(false)
-        end
-        local arrorleft = self._MJPGCItem:getChildByName("ico_pgch_left")
-        if arrorleft then
-            arrorleft:setVisible(false)
-        end
-        local arrorup = self._MJPGCItem:getChildByName("ico_pgch_up")
-        if arrorup then
-            arrorup:setVisible(false)
-        end
-        local arrorright = self._MJPGCItem:getChildByName("ico_pgch_right")
-        if arrorright then
-            arrorright:setVisible(false)
-        end
-
-        local arror = nil
-        if self._sourceIndex == 1 then
-            arror = self._MJPGCItem:getChildByName("ico_pgch_down")
-        elseif self._sourceIndex == 2 then
-            arror = self._MJPGCItem:getChildByName("ico_pgch_left")
-        elseif self._sourceIndex == 3 then
-            arror = self._MJPGCItem:getChildByName("ico_pgch_up")
-        elseif self._sourceIndex == 4 then
-            arror = self._MJPGCItem:getChildByName("ico_pgch_right")
-        else        
-        end
-        if arror then
-            arror:setVisible(true)
-        end
-
     end
 end
 
@@ -160,7 +114,7 @@ function MJPGCCardsItem:setPGCCardsFace()
         local cardID = -1
         local baseIDs = {}
 
---[[        if self:getPGCType() == MJGameDef.MJ_TYPE_ANGANG then
+        if self:getPGCType() == MJGameDef.MJ_TYPE_ANGANG then
             if self._MJPGCCards:getDrawIndex() == self._MJPGCCards:getMyDrawIndex() then
                 for i = 1, 2 do
                     baseIDs[i] = MJGameDef.MJ_CARD_BACK_ID
@@ -172,10 +126,10 @@ function MJPGCCardsItem:setPGCCardsFace()
                 end
             end
             cardID = MJGameDef.MJ_CARD_BACK_ID
-        else]]
+        else
             cardID = self._cardID
             baseIDs = self._baseIDs
---        end
+        end
 
         if self._MJPGCCardsList[1] then
             self._MJPGCCardsList[1]:setMJID(cardID)

@@ -1,8 +1,8 @@
 
-local MJShowDownCards = import("src.app.Game.mMJGame.MJShowDownCards")
+local MJShowDownCards = import("..mMJGame.MJShowDownCards")
 local MyShowDownCards = class("MyShowDownCards", MJShowDownCards)
 
-local MyCardShowDown            = import("src.app.Game.mMyGame.MyCardShowDown")
+local MyCardShowDown            = import(".MyCardShowDown")
 
 function MyShowDownCards:init()
     if not self._showDownCardsPanel then return end
