@@ -157,7 +157,7 @@ function BaseGameConnect:gc_CheckVersion()
         else
             gameVersionName = "AND"
         end
-        local gameVersion = self._gameController.getGameVersion()
+        local gameVersion = self._gameController:getGameVersion()
         local splitArray = string.split(gameVersion, ".")
         if #splitArray == 3 then
             majorVer = tonumber(splitArray[1])

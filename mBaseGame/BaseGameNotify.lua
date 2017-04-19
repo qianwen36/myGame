@@ -1,7 +1,6 @@
 
 local BaseGameNotify = class("BaseGameNotify")
 
-local BaseGameReq               = import(".BaseGameReq")
 local BaseGameDef               = import(".BaseGameDef")
 
 function BaseGameNotify:create(gameController)

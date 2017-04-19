@@ -172,7 +172,7 @@ end
 
 function BaseGameController:createNetwork()
     local params = self.params_
-    self._baseGameNetworkClient = MCAgent:getInstance():createClient(params.ip, params.port)
+    self._baseGameNetworkClient = MCAgent:getInstance():createClient(params.host, params.port)
 
     local function onDataReceived(clientid, msgtype, session, request, data)
         self:onDataReceived(clientid, msgtype, session, request, data)
@@ -1779,7 +1779,7 @@ end
 
 function BaseGameController:gotoHallScene()
     print("GoBackToMainScene")
-    self._baseGameScene:goBack()
+    self:getFinished()
     self._offroom = nil
 end
 
@@ -2001,6 +2001,10 @@ function BaseGameController:isSingleClk()
         return setting:isSelCardBySingleClk()
     end
     return true
+end
+
+function BaseGameController:getGameVersion()
+    return self._baseGameScene:getApp():getConfig('app').version
 end
 
 return BaseGameController
