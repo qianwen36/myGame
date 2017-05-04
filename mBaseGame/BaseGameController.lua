@@ -5,6 +5,7 @@ end
 
 
 require("src.cocos.cocos2d.bitExtend")
+local ffi = require('ffi')
 
 local BaseGameDef                               = import(".BaseGameDef")
 
@@ -132,8 +133,8 @@ function BaseGameController:setSelfInfo()
     selfInfo.nPortrait      = playerInfo.nPortrait
     selfInfo.nNetSpeed      = playerInfo.nNetSpeed
     selfInfo.nClothingID    = playerInfo.nClothingID
-    selfInfo.szUserName     = playerInfo.szUsername
-    selfInfo.szNickName     = playerInfo.szNickName
+    selfInfo.szUserName     = ffi.string(playerInfo.szUsername)
+    selfInfo.szNickName     = ffi.string(playerInfo.szNickName)
     selfInfo.nDeposit       = playerInfo.nDeposit
     selfInfo.nPlayerLevel   = playerInfo.nPlayerLevel
     selfInfo.nScore         = playerInfo.nScore
@@ -158,7 +159,7 @@ function BaseGameController:setUtilsInfo()
     local RoomInfo = params.roomData
 
     local utilsInfo = {}
-    utilsInfo.szHardID          = params.deviceInfo.szHardID
+    utilsInfo.szHardID          = ffi.string(playerInfo.pe.szHardID)
     utilsInfo.nRoomTokenID      = playerEnterGameOK.nRoomTokenID
     utilsInfo.nMbNetType        = DeviceUtils:getInstance():getNetworkType()
     utilsInfo.bLookOn           = 0
@@ -1721,7 +1722,7 @@ function BaseGameController:onEnterGameFailed()
     if loadingNode then
         --loadingNode:stopLoadingTimer()
     end
-    function keyStr(alter)
+    local function keyStr(alter)
         if alter then
             return "G_ENTERGAME_FAILED_PLAYING"
         else
